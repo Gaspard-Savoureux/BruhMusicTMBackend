@@ -1,17 +1,17 @@
 -- https://github.com/raevenruiz/Spotify-Library-Database/blob/main/queries%20to%20initialize%20tables/spotify%20database%20create%20tables%20v1.sql
 
-DROP TABLE IF EXISTS song;
-CREATE TABLE song (
+DROP TABLE IF EXISTS music;
+CREATE TABLE music (
   id integer PRIMARY KEY AUTO_INCREMENT,
   title varchar(50) NOT NULL,
-  runtime integer NOT NULL,
-  plays bigint NOT NULL,
-  uploaded date NOT NULL
+  duration integer NOT NULL,
+  plays bigint NOT NULL DEFAULT 0,
+  uploaded datetime DEFAULT NOW()
 );
 
 -- UPDATE:
 -- Had to reinsert the title column to the table on Postbird,
--- therefore the order of the songs table is as follows:
+-- therefore the order of the musics table is as follows:
 -- * id 
 -- * artist_id
 -- * album_id
@@ -40,12 +40,12 @@ CREATE TABLE album (
   --release_date date NOT NULL
 );
 
-ALTER TABLE song
-ADD COLUMN artist_id integer REFERENCES artist(id);
-ALTER TABLE song
+ALTER TABLE music
+ADD COLUMN user_id integer REFERENCES user(id);
+ALTER TABLE music
 ADD COLUMN album_id integer REFERENCES album(id);
 ALTER TABLE album
-ADD COLUMN artist_id integer REFERENCES artist(id);
+ADD COLUMN user_id integer REFERENCES user(id);
 
 DROP TABLE IF EXISTS user;
 CREATE TABLE user (
@@ -55,7 +55,7 @@ CREATE TABLE user (
   password varchar(120) NOT NULL,
   followers integer DEFAULT 0,
   following integer DEFAULT 0,
-  signed_up date DEFAULT CURRENT_DATE()
+  signed_up datetime DEFAULT NOW()
 );
 
 DROP TABLE IF EXISTS playlist;
@@ -73,11 +73,11 @@ CREATE TABLE users_playlists (
 	PRIMARY KEY (user_id, playlist_id)
 );
 
-DROP TABLE IF EXISTS playlists_songs;
-CREATE TABLE playlists_songs (
-  song_id integer REFERENCES song(id),
+DROP TABLE IF EXISTS playlists_music;
+CREATE TABLE playlists_music (
+  music_id integer REFERENCES music(id),
   playlist_id integer REFERENCES playlist(id),
-  PRIMARY KEY (song_id, playlist_id)
+  PRIMARY KEY (music_id, playlist_id)
 );
 
 -- On pourrait peut-être mettre l'option de podcast mais je suis pas tant down
