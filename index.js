@@ -9,7 +9,7 @@ const router = require('./router');
 const app = express();
 const port = 3000;
 
-app.use(express.static('uploads'));
+app.use(express.static('public'));
 app.use(bodyParser.json()); // http://expressjs.com/en/resources/middleware/body-parser.html
 
 app.use('/', router);

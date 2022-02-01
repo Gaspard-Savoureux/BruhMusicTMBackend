@@ -17,7 +17,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 router.post('/', upload.single('file'), async (req, res) => {
-  console.log(req.file);
+  console.log(req.file, req.body);
 
   const metadata = await mm.parseFile(`${req.file.path}`);
   const { duration } = metadata.format;

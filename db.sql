@@ -4,9 +4,11 @@ DROP TABLE IF EXISTS music;
 CREATE TABLE music (
   id integer PRIMARY KEY AUTO_INCREMENT,
   title varchar(50) NOT NULL,
-  duration integer NOT NULL,
+  --displayed_title varchar(50) NOT NULL, Bonne idée
+  duration float NOT NULL,
   plays bigint NOT NULL DEFAULT 0,
-  uploaded datetime DEFAULT NOW()
+  uploaded datetime DEFAULT NOW(),
+  image varchar(80) DEFAULT NULL,
 );
 
 -- UPDATE:

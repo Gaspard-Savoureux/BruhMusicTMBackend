@@ -73,38 +73,38 @@ paths:
                   message:
                     type: string
   
-  # /user:
-  #   get:
-  #     tags:
-  #       - User
-  #     summary: Route pour accèder aux informations de l'employé actuel.
-  #     security:
-  #       - bearerAuth: []
-  #     description: Route pour accèder aux informations de l'employé actuel grâce à son jeton d'authentification.
-  #     responses:
-  #       "200":
-  #         description: retourne un(e) employé(e) avec leurs informations.
-  #         content:
-  #           application/json:
-  #             schema:
-  #               $ref: '#/components/schemas/ResponseEmployePayload'
-  #       "404":
-  #         description: Non trouvé
-  #         content:
-  #           application/json:
-  #             schema:
-  #               $ref: "#/components/schemas/NotFound"
+  /user:
+    get:
+      tags:
+        - User
+      summary: Route pour accèder aux informations de l'employé actuel.
+      security:
+        - bearerAuth: []
+      description: Route pour accèder aux informations de l'employé actuel grâce à son jeton d'authentification.
+      responses:
+        "200":
+          description: retourne un(e) employé(e) avec leurs informations.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserCreationPayload'
+        "404":
+          description: Non trouvé
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFound"
     
-  /upload:
+  /music:
     post:
      tags:
-       - Message
-    #  security:
-    #    - bearerAuth: []
-     description: Route pour créer un message global pour l'entreprise.
+       - Music
+     security:
+       - bearerAuth: []
+     description: Route pour uploader les musics.
      responses:
        "201":
-         description: La réponse lorsque l'évenement est créé.
+         description: Réponse lorsque la musique est créé.
          content:
            application/json:
              schema:
@@ -112,6 +112,80 @@ paths:
                properties:
                  added:
                    type: boolean
+       "401":
+          description: Non authorizé
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthorized"
+    get:
+     tags:
+      - Music
+     description: Route pour retourner toutes les musics ou les musiques correspondant à la recherche.
+     parameters:
+        - in: query
+          name: title
+          schema:
+            type: string
+          description: critère de recherche pour retourner les chansons.
+     responses:
+       "201":
+         description: Réponse retournant les informations conçernant la ou les musique(s) choisie(s).
+         content:
+           application/json:
+             schema:
+               type: object
+               properties:
+                 added:
+                   type: boolean
+       "401":
+          description: Non authorizé
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthorized"
+       "404":
+          description: Non trouvé
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFound"
+
+  /music/{id}:         
+    get:
+     tags:
+      - Music
+     description: Route pour retourner les informations les musics.
+     parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: L'id de la musique cherchée.
+     responses:
+       "201":
+         description: Réponse retournant les informations conçernant la musique choix.
+         content:
+           application/json:
+             schema:
+               type: object
+               properties:
+                 added:
+                   type: boolean
+       "401":
+          description: Non authorizé
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthorized"
+       "404":
+          description: Non trouvé
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFound"
+     
 
 components:
   securitySchemes:
@@ -167,6 +241,17 @@ components:
       properties:
         created:
           type: boolean
+
+    MusicCreationPayload:
+      type: object
+      required:
+        - title
+        - duration
+      properties:
+        title:
+          type: string
+        duration:
+          type: number
     Unauthorized:
       type: object
       properties:

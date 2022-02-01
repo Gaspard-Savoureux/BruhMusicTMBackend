@@ -5,7 +5,7 @@ const { Router } = require('express');
 const authMiddleware = require('../modules/auth-middleware');
 const auth = require('./auth');
 const user = require('./user');
-const upload = require('./upload');
+const music = require('./music');
 
 const router = Router();
 
@@ -21,7 +21,6 @@ router.use('/auth', auth);
 
 router.use('/user', authMiddleware, user);
 
-// router.use('/upload', authMiddleware, upload); A REMETTRE
-router.use('/upload', upload);
+router.use('/music', music);
 
 module.exports = router;
