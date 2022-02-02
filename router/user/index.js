@@ -49,4 +49,10 @@ router.put('/', async (req, res) => {
   return res.status(200).json({ modified });
 });
 
+router.delete('/', async (req, res) => {
+  await db('user').where('id', req.user.userId).del();
+  return res.status(200).json({ msg: 'utilisateur effacé avec succès' });
+});
+k;
+
 module.exports = router;

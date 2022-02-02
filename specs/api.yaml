@@ -94,6 +94,48 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/NotFound"
+    put:
+      tags:
+        - User
+      summary: Route pour accèder aux informations de l'employé actuel.
+      security:
+        - bearerAuth: []
+      description: Route pour accèder aux informations de l'employé actuel grâce à son jeton d'authentification.
+      responses:
+        "200":
+          description: retourne un(e) employé(e) avec leurs informations.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Success'
+        "404":
+          description: Non trouvé
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFound"
+
+   delete:
+      tags:
+        - User
+      summary: Route pour supprimer un user.
+      security:
+        - bearerAuth: []
+      description: Route supprimant un user en obtenant son id via le token fournit.
+      responses:
+        "200":
+          description: retourne un(e) employé(e) avec leurs informations.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Succes"
+        "404":
+          description: Non trouvé
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFound"
+
     
   /music:
     post:
@@ -252,6 +294,10 @@ components:
           type: string
         duration:
           type: number
+    Success:
+      type: object
+      properties:
+        msg: string
     Unauthorized:
       type: object
       properties:
