@@ -1,0 +1,327 @@
+{
+  "info": {
+    "name": "RESTer",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "BruhMusic",
+      "item": [
+        {
+          "name": "auth",
+          "item": [
+            {
+              "request": {
+                "url": "http://localhost:3000/auth/create-token",
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"email\": \"bumblebee@gmail.com\",\n    \"password\": \"12345\"\n}"
+                }
+              },
+              "id": "rester-8",
+              "name": "create-token"
+            },
+            {
+              "request": {
+                "url": "http://localhost:3000/auth/register",
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"username\": \"bumblebee\",\n    \"email\": \"bumblebee@gmail.com\",\n    \"password\": \"12345\"\n}"
+                }
+              },
+              "id": "rester-9",
+              "name": "register"
+            }
+          ]
+        },
+        {
+          "name": "music",
+          "item": [
+            {
+              "request": {
+                "url": "http://localhost:3000/music/2",
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTY0MzgzNTE2OH0.jhj6EG64D9M38msnCXjYizCKzBahE4XNegq6UmuSiqA"
+                  }
+                ]
+              },
+              "id": "rester-17",
+              "name": "delete"
+            },
+            {
+              "name": "get",
+              "item": [
+                {
+                  "request": {
+                    "url": "http://localhost:3000/music/1",
+                    "method": "get",
+                    "header": []
+                  },
+                  "id": "rester-11",
+                  "name": "id"
+                },
+                {
+                  "request": {
+                    "url": "http://localhost:3000/music?title=taco",
+                    "method": "GET",
+                    "header": []
+                  },
+                  "id": "rester-10",
+                  "name": "search"
+                },
+                {
+                  "request": {
+                    "url": "http://localhost:3000/music/user/1",
+                    "method": "get",
+                    "header": []
+                  },
+                  "id": "rester-15",
+                  "name": "user"
+                }
+              ]
+            },
+            {
+              "request": {
+                "url": "http://localhost:3000/music/",
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "multipart/form-data"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTY0MzgzMzI1NX0.15-C9zvz6TlLr1tbmEC7AGFJ2ggFY1b00Gz0iSeOA1o"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "file=[$file.taco-bell-bong-sfx-mp3]"
+                }
+              },
+              "id": "rester-16",
+              "name": "post"
+            }
+          ]
+        },
+        {
+          "name": "user",
+          "item": [
+            {
+              "request": {
+                "url": "http://localhost:3000/user",
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTY0MzY2OTc4NX0.zHmykpnTgCiUGot5PtJor9CBTOM-aC0QoOJUVOehHjs"
+                  }
+                ]
+              },
+              "id": "rester-13",
+              "name": "delete"
+            },
+            {
+              "name": "get",
+              "item": [
+                {
+                  "request": {
+                    "url": "http://localhost:3000/user",
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Authorization",
+                        "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTY0MzY2OTc4NX0.zHmykpnTgCiUGot5PtJor9CBTOM-aC0QoOJUVOehHjs"
+                      }
+                    ]
+                  },
+                  "id": "rester-22",
+                  "name": "self"
+                }
+              ]
+            },
+            {
+              "request": {
+                "url": "http://localhost:3000/user",
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTY0MzY2OTc4NX0.zHmykpnTgCiUGot5PtJor9CBTOM-aC0QoOJUVOehHjs"
+                  }
+                ]
+              },
+              "id": "rester-14",
+              "name": "get"
+            },
+            {
+              "request": {
+                "url": "http://localhost:3000/user",
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTY0MzY2OTc4NX0.zHmykpnTgCiUGot5PtJor9CBTOM-aC0QoOJUVOehHjs"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": " { \n     \"newPassword\": \"1234\"\n } "
+                }
+              },
+              "id": "rester-12",
+              "name": "put"
+            }
+          ]
+        },
+        {
+          "name": "user-playlist",
+          "item": [
+            {
+              "request": {
+                "url": "http://localhost:3000/user-playlist/",
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTY0MzgzMzI1NX0.15-C9zvz6TlLr1tbmEC7AGFJ2ggFY1b00Gz0iSeOA1o"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"name\": \"sick_beat\",\n    \"description\": \"playlist of sick beats\"\n}"
+                }
+              },
+              "id": "rester-20",
+              "name": "delete"
+            },
+            {
+              "name": "get",
+              "item": [
+                {
+                  "request": {
+                    "url": "http://localhost:3000/user-playlist",
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Authorization",
+                        "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTY0MzgzMzI1NX0.15-C9zvz6TlLr1tbmEC7AGFJ2ggFY1b00Gz0iSeOA1o"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n    \"name\": \"sick_beat\",\n    \"description\": \"playlist of sick beats\"\n}"
+                    }
+                  },
+                  "id": "rester-21",
+                  "name": "user"
+                }
+              ]
+            },
+            {
+              "request": {
+                "url": "http://localhost:3000/user-playlist",
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTY0MzgzMzI1NX0.15-C9zvz6TlLr1tbmEC7AGFJ2ggFY1b00Gz0iSeOA1o"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"name\": \"sick_beat\",\n    \"description\": \"playlist of sick beats\"\n}"
+                }
+              },
+              "id": "rester-19",
+              "name": "get"
+            },
+            {
+              "request": {
+                "url": "http://localhost:3000/user-playlist/1",
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTY0MzY2OTc4NX0.zHmykpnTgCiUGot5PtJor9CBTOM-aC0QoOJUVOehHjs"
+                  }
+                ]
+              },
+              "id": "rester-24",
+              "name": "get-id"
+            },
+            {
+              "request": {
+                "url": "http://localhost:3000/user",
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTY0MzY2OTc4NX0.zHmykpnTgCiUGot5PtJor9CBTOM-aC0QoOJUVOehHjs"
+                  }
+                ]
+              },
+              "id": "rester-23",
+              "name": "get-user"
+            },
+            {
+              "request": {
+                "url": "http://localhost:3000/user-playlist/",
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTY0MzgzMzI1NX0.15-C9zvz6TlLr1tbmEC7AGFJ2ggFY1b00Gz0iSeOA1o"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"name\": \"sick_beat\",\n    \"description\": \"playlist of sick beats\"\n}"
+                }
+              },
+              "id": "rester-18",
+              "name": "post"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

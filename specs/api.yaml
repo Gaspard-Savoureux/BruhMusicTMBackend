@@ -87,7 +87,28 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UserCreationPayload'
+                type: object
+                required:
+                  - email
+                  - id
+                  - username
+                properties:
+                  email:
+                    type: string
+                  id:
+                    type: integer
+                  username:
+                    type: string
+                  followers:
+                    type: integer
+                  following:
+                    type: integer
+                  signed_up:
+                    type: string 
+                    format: date-time
+                    pattern: /([0-9]{4})-(?:[0-9]{2})-([0-9]{2})_([0-2][0-9]):([0-6][0-9]):([0-6][0-9])/
+                    example: "2019-05-17_12:45:03" 
+                  
         "404":
           description: Non trouvé
           content:
@@ -115,7 +136,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/NotFound"
 
-   delete:
+    delete:
       tags:
         - User
       summary: Route pour supprimer un user.
@@ -128,7 +149,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Succes"
+                $ref: "#/components/schemas/Success"
         "404":
           description: Non trouvé
           content:
@@ -227,7 +248,236 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/NotFound"
-     
+    delete:
+      tags:
+        - Music
+      summary: Route pour supprimer une musique.
+      security:
+        - bearerAuth: []
+      description: Route supprimant une musique en via le id de celle-ci.
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: L'id de la musique cherchée.
+      responses:
+        "200":
+          description: retourne un message confirmant le résultat désiré.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Success"
+        "401":
+          description: Non authorizé
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthorized"
+        "404":
+          description: Non trouvé
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFound"
+
+  /music/user/{userId}:         
+    get:
+     tags:
+      - Music
+     description: Route pour retourner les informations les musics.
+     parameters:
+        - in: path
+          name: userId
+          schema:
+            type: integer
+          required: true
+          description: L'id de la musique cherchée.
+     responses:
+       "201":
+         description: Réponse retournant les informations conçernant la musique choix.
+         content:
+           application/json:
+             schema:
+               type: object
+               properties:
+                 music:
+                   type: array
+       "401":
+          description: Non authorizé
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthorized"
+       "404":
+          description: Non trouvé
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFound"
+
+  /user-playlist:
+    post:
+     tags:
+       - user-playlist
+     security:
+       - bearerAuth: []
+     description: Route ajouter une playlist.
+     responses:
+       "201":
+         description: Réponse lorsque la playlist est créé.
+         content:
+           application/json:
+             schema:
+               type: object
+               properties:
+                 added:
+                   type: boolean
+       "401":
+          description: Non authorizé
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthorized"
+       "409":
+          description: l'utilisateur existe déjà
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Conflict"
+    get:
+     tags:
+      - user-playlist
+     description: Route pour retourner toutes les playlist d'un utilisateur.
+     responses:
+       "200":
+         description: Réponse contenant les informations conçernant la ou les playlist(s) retournée(s).
+         content:
+           application/json:
+             schema:
+               type: object
+               properties:
+                id:
+                  type: integer
+                name:
+                  type: string
+                description:
+                  type: string
+                followers:
+                  type: string
+                 
+       "401":
+          description: Non authorizé
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthorized"
+       "404":
+          description: Non trouvé
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFound"
+
+  /user-playlist/{id}:
+    get:
+     tags:
+      - user-playlist
+     description: Route pour retourner les informations d'une playlist.
+     parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: L'id de la playlist cherchée.
+     responses:
+       "200":
+         description: informations de la playlist choisis.
+         content:
+           application/json:
+             schema:
+                $ref: "#/components/schemas/Success"
+       "401":
+          description: Non authorizé
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthorized"
+       "404":
+          description: Non trouvé
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFound"
+    delete:
+      tags:
+        - user-playlist
+      summary: Route pour supprimer une playlist.
+      security:
+        - bearerAuth: []
+      description: Route supprimant une playlist en via le id de celle-ci.
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: L'id de la playlist cherchée.
+      responses:
+        "200":
+          description: retourne un message confirmant le résultat désiré.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Success"
+        "401":
+          description: Non authorizé
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthorized"
+        "404":
+          description: Non trouvé
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFound"
+  /user-playlist/user/{userId}:         
+    get:
+     tags:
+      - user-playlist
+     description: Route pour toutes les playlist d'un user.
+     parameters:
+        - in: path
+          name: userId
+          schema:
+            type: integer
+          required: true
+          description: L'id du user.
+     responses:
+       "200":
+         description: Réponse retournant une liste des playlists de l'utilisateur.
+         content:
+           application/json:
+             schema:
+               type: object
+               properties:
+                 music:
+                   type: array
+       "401":
+          description: Non authorizé
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthorized"
+       "404":
+          description: Non trouvé
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFound"
 
 components:
   securitySchemes:
@@ -297,13 +547,19 @@ components:
     Success:
       type: object
       properties:
-        msg: string
+        msg:
+          type: string
     Unauthorized:
       type: object
       properties:
         status:
           type: string
     NotFound:
+      type: object
+      properties:
+        status:
+          type: string
+    Conflict:
       type: object
       properties:
         status:

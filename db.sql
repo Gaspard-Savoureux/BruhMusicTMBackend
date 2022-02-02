@@ -4,11 +4,11 @@ DROP TABLE IF EXISTS music;
 CREATE TABLE music (
   id integer PRIMARY KEY AUTO_INCREMENT,
   title varchar(50) NOT NULL,
-  --displayed_title varchar(50) NOT NULL, Bonne idée
+  file_name varchar(50) NOT NULL,
   duration float NOT NULL,
   plays bigint NOT NULL DEFAULT 0,
   uploaded datetime DEFAULT NOW(),
-  image varchar(80) DEFAULT NULL,
+  image varchar(80) DEFAULT NULL
 );
 
 -- UPDATE:
@@ -65,7 +65,7 @@ CREATE TABLE playlist (
 	id integer PRIMARY KEY AUTO_INCREMENT,
   name varchar(50) NOT NULL,
   description varchar(200) NOT NULL,
-  followers integer
+  followers integer DEFAULT 0
 );
 
 DROP TABLE IF EXISTS users_playlists;

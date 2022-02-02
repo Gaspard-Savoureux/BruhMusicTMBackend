@@ -52,10 +52,20 @@ router.post('/register', async (req, res) => {
     return res.status(409).json({ message: `${msg} déjà existant` });
   }
 
-  await db('user').insert({
+  const userId = await db('user').insert({
     username,
     email,
     password: hashedPassword,
+  });
+
+  const playlistId = await db('playlist').insert({
+    name: 'favorite',
+    description: `playlist de musique favorites de ${username}`,
+  });
+
+  await db('users_playlists').insert({
+    user_id: userId,
+    playlist_id: playlistId,
   });
 
   return res.status(201).json({ created: true });
