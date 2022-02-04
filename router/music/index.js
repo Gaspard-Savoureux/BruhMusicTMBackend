@@ -58,8 +58,7 @@ router.post('/', authMiddleware, upload.single('file'), async (req, res) => {
 
 router.get('/', async (req, res) => {
   const { title } = req.query;
-
-  const [searchRelatedExist] = await db('music').where('title', 'like', `%${title}%`);
+  const searchRelatedExist = await db('music').where('title', 'like', `%${title}%`);
 
   if (!searchRelatedExist) {
     return res.status(404).send({ message: 'Aucun résultats retourner pour cette recherche' });

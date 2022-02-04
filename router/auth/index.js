@@ -12,8 +12,6 @@ router.post('/create-token/', async (req, res) => {
   const isEmail = regexEmail.test(userCred);
   const user = isEmail ? await db('user').where('email', userCred).first() : await db('user').where('username', userCred).first();
 
-  // const user = username ? await db('user').where('username', username).first() : await db('user').where('email', email).first();
-
   if (!user) {
     return res.status(404).json({ message: 'Utilisateur non trouvé' });
   }
