@@ -65,7 +65,7 @@ router.get('/', async (req, res) => {
     return res.status(404).send({ message: 'Aucun résultats retourner pour cette recherche' });
   }
 
-  return res.status(201).send({ searchRelatedExist });
+  return res.status(201).json(searchRelatedExist);
 });
 
 // obtient une musique selon son id
