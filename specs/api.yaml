@@ -486,7 +486,7 @@ components:
     TokenCreationPayload:
       type: object
       required:
-        - email
+        - userCred
         - password
       properties:
         email:

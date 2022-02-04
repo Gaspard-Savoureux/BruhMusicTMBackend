@@ -6,9 +6,14 @@ const db = require('../../modules/db');
 const router = express.Router();
 
 router.post('/create-token/', async (req, res) => {
-  const { username, email, password } = req.body;
+  const { userCred, password } = req.body;
 
-  const user = username ? await db('user').where('username', username).first() : await db('user').where('email', email).first();
+  const regexEmail = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  const isEmail = regexEmail.test(userCred);
+  const user = isEmail ? await db('user').where('email', userCred).first() : await db('user').where('username', userCred).first();
+
+  // const user = username ? await db('user').where('username', username).first() : await db('user').where('email', email).first();
+
   if (!user) {
     return res.status(404).json({ message: 'Utilisateur non trouvé' });
   }
