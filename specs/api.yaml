@@ -489,9 +489,7 @@ components:
         - userCred
         - password
       properties:
-        email:
-          type: string
-        username:
+        userCred:
           type: string
         password:
           type: string
