@@ -1,4 +1,6 @@
 const OpenApiValidator = require('express-openapi-validator');
+const swaggerUI = require('swagger-ui-express');
+const YAML = require('yamljs');
 
 const { Router } = require('express');
 
@@ -10,9 +12,12 @@ const usersPlaylist = require('./user-playlist');
 
 const router = Router();
 
+const apiSpec = './specs/api.yaml';
+
+router.use('/doc', swaggerUI.serve, swaggerUI.setup(YAML.load(apiSpec)));
 router.use(
   OpenApiValidator.middleware({
-    apiSpec: './specs/api.yaml',
+    apiSpec,
     validateRequests: true,
     validateResponses: true,
   }),
