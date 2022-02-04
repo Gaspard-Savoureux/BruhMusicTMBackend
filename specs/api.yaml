@@ -172,6 +172,9 @@ paths:
            application/json:
              schema:
                type: object
+               properties:
+                 added:
+                   type: boolean
        "401":
           description: Non authorizé
           content:
@@ -195,9 +198,6 @@ paths:
            application/json:
              schema:
                type: object
-               properties:
-                 added:
-                   type: boolean
        "401":
           description: Non authorizé
           content:
