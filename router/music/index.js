@@ -7,6 +7,7 @@ const fs = require('fs');
 const authMiddleware = require('../../modules/auth-middleware');
 
 const db = require('../../modules/db');
+const { ownMusic } = require('../../modules/verif');
 
 const storage = multer.diskStorage({
   filename: (req, file, cb) => {
@@ -100,8 +101,8 @@ router.delete('/:id', authMiddleware, async (req, res) => {
 
   const music = await db('music').where('id', id).first();
 
-  if (!music) return res.status(404).send({ deleted: 'non existant' });
-  if (req.user.userId !== music.user_id) return res.status(401).send({ msg: 'Pas les permissions nécessaire pour supprimer cette musique' });
+  const { status, message } = await ownMusic(id, req.user.userId);
+  if (status) return res.status(status).send({ message });
 
   await db('music').where('id', id).del();
 

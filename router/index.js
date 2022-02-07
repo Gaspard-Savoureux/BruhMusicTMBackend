@@ -9,6 +9,7 @@ const auth = require('./auth');
 const user = require('./user');
 const music = require('./music');
 const usersPlaylist = require('./user-playlist');
+const playlistsMusic = require('./playlists-music');
 
 const router = Router();
 
@@ -30,5 +31,7 @@ router.use('/user', authMiddleware, user);
 router.use('/music', music);
 
 router.use('/user-playlist', usersPlaylist);
+
+router.use('/playlists-music', playlistsMusic);
 
 module.exports = router;

@@ -4,42 +4,57 @@ const router = express.Router();
 const authMiddleware = require('../../modules/auth-middleware');
 
 const db = require('../../modules/db');
+const { playlistsMusic } = require('../../modules/verif');
 
 // Ajoute une musique à une playlist
-// TODO à tester
 router.post('/', authMiddleware, async (req, res) => {
   const { playlistId, musicId } = req.body;
 
-  // vérifie si la playlist à ajouter existe
-  const playlistExist = await db('playlist').where('id', playlistId).first();
-  const musicExist = await db('music').where('id', musicId).first();
-  const alreadyInPlaylist = await db('playlists_music') //
-    .where('id', musicId)
-    .where('id', playlistId);
+  const { status, message } = await playlistsMusic(playlistId, musicId, req.user.userId);
+  if (status) return res.status(status).send({ message });
 
-  if (!playlistExist) return res.status(404).json({ message: 'une playlist porte déjà ce nom' });
-  if (!musicExist) return res.status(404).json({ message: 'une playlist porte déjà ce nom' });
-  if (alreadyInPlaylist) return res.status(409).json({ message: 'La musique existe déjà dans cette playlist' });
+  await db('playlists_music').insert({ playlist_id: playlistId, music_id: musicId });
 
-  await db('userplaylists_music').insert({ playlistId, musicExist });
-
-  return res.status(201).json({ created: true });
+  return res.status(201).json({ added: true });
 });
 
 // Route pour obtenir toute les musiques d'une playlist
-// TODO tester
-router.get('/:id', async (req, res) => {
-  const { id } = req.params;
+router.get('/:playlistId', async (req, res) => {
+  const { playlistId } = req.params;
 
   const playlist = await db('playlists_music') //
     .join('playlist', 'playlists_music.playlist_id', 'playlist.id')
-    .where('id', id);
+    .join('music', 'playlists_music.music_id', 'music.id')
+    .where('playlist.id', playlistId);
 
   if (!playlist) return res.status(404).send({ message: 'Playlist inexistante' });
 
-  return res.status(200).send({ playlist });
+  return res.status(200).json(playlist);
 });
 
+// Ajoute une musique à une playlist
+router.delete('/', authMiddleware, async (req, res) => {
+  const { playlistId, musicId } = req.body;
+
+  // vérifie si la playlist existe
+  const playlistExist = await db('playlist').where('id', playlistId).first();
+  const inPlaylist = await db('playlists_music') //
+    .where('music_id', musicId)
+    .where('playlist_id', playlistId)
+    .first();
+
+  if (!playlistExist) return res.status(404).json({ message: 'une playlist porte déjà ce nom' });
+  if (!inPlaylist) return res.status(404).json({ message: "La musique n'est pas dans cette playlist" });
+
+  await db('playlists_music') //
+    .where('playlist_id', playlistId)
+    .where('music_id', musicId)
+    .del();
+
+  return res.status(200).json({ deleted: true });
+});
+
+//
 router.get('/', async (req, res) => {
   const { userId } = req.query.userId ? req.query.userId : req.user.userId;
 
@@ -67,15 +82,6 @@ router.get('/', async (req, res) => {
 // });
 
 // obtient toute les playlists liées à un user selon son id.
-router.get('/user/:userId', async (req, res) => {
-  const { userId } = req.params;
-
-  const playlist = await db('users_playlists') //
-    .join('playlist', 'users_playlists.playlist_id', 'playlist.id')
-    .where('id', userId);
-
-  return res.status(200).send({ playlist });
-});
 
 router.delete('/:id', authMiddleware, async (req, res) => {
   const { id } = req.params;

@@ -353,16 +353,9 @@ paths:
          content:
            application/json:
              schema:
-               type: object
-               properties:
-                id:
-                  type: integer
-                name:
-                  type: string
-                description:
-                  type: string
-                followers:
-                  type: string
+              type: array
+              items:
+                $ref: "#/components/schemas/Playlist"
                  
        "401":
           description: Non authorizé
@@ -441,6 +434,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/NotFound"
+
   /user-playlist/user/{userId}:         
     get:
      tags:
@@ -505,6 +499,44 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Conflict"
+    delete:
+      tags:
+        - playlists-music
+      summary: Route pour retirez une musique d'une playlist.
+      security:
+        - bearerAuth: []
+      description: Route supprimant une musique dans une playlist via leur id respectif.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - playlistId
+                - musicId
+      responses:
+        "200":
+          description: retourne un message confirmant le résultat désiré.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        "401":
+          description: Non authorizé
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthorized"
+        "404":
+          description: Non trouvé
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFound"
     # get:
     #  tags:
     #   - playlists-music
@@ -538,6 +570,73 @@ paths:
     #         application/json:
     #           schema:
     #             $ref: "#/components/schemas/NotFound"
+  /playlists-music/{playlistId}:
+    get:
+     tags:
+      - playlists-music
+     description: Route pour retourner les musiques appartenant à une playlist.
+     parameters:
+        - in: path
+          name: playlistId
+          schema:
+            type: integer
+          required: true
+          description: L'id de la playlist cherchée.
+     responses:
+       "200":
+         description: musiques de la playlist choisis.
+         content:
+           application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Music"
+ 
+       "401":
+          description: Non authorizé
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthorized"
+       "404":
+          description: Non trouvé
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFound"
+    delete:
+      tags:
+        - playlists-music
+      summary: Route pour supprimer une playlist.
+      security:
+        - bearerAuth: []
+      description: Route supprimant une playlist en via le id de celle-ci.
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: L'id de la playlist cherchée.
+      responses:
+        "200":
+          description: retourne un message confirmant le résultat désiré.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Success"
+        "401":
+          description: Non authorizé
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthorized"
+        "404":
+          description: Non trouvé
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFound"
 
 components:
   securitySchemes:
@@ -602,6 +701,58 @@ components:
           type: string
         duration:
           type: number
+    Playlist:
+      type: object
+      properties:
+        id:
+          type: integer
+        user_id:
+          type: integer
+        playlist_id:
+          type: integer
+        name:
+          type: string
+        description:
+          type: string
+        followers:
+          type: integer
+    Music:
+      type: object
+      properties:
+        id:
+          type: integer
+        music_id: 
+          type: integer
+        playlist_id:
+          type: integer
+        name:
+          type: string
+        description:
+          type: string
+          nullable: true
+        followers:
+          type: integer
+        title:
+          type: string
+        file_name:
+          type: string
+        duration:
+          type: number
+        plays:
+          type: integer
+        uploaded:
+          type: string 
+          format: date-time
+          pattern: /([0-9]{4})-(?:[0-9]{2})-([0-9]{2})_([0-2][0-9]):([0-6][0-9]):([0-6][0-9])/
+          example: "2019-05-17_12:45:03" 
+        image:
+          type: string
+          nullable: true
+        user_id:
+          type: integer
+        album_id:
+          type: integer
+          nullable: true
     Success:
       type: object
       properties:
@@ -610,15 +761,15 @@ components:
     Unauthorized:
       type: object
       properties:
-        status:
+        message:
           type: string
     NotFound:
       type: object
       properties:
-        status:
+        message:
           type: string
     Conflict:
       type: object
       properties:
-        status:
+        message:
           type: string
