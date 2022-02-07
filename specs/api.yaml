@@ -476,6 +476,69 @@ paths:
               schema:
                 $ref: "#/components/schemas/NotFound"
 
+  /playlists-music:
+    post:
+     tags:
+       - playlists-music
+     security:
+       - bearerAuth: []
+     description: Route ajouter une musique dans une playlist.
+     responses:
+       "201":
+         description: Réponse lorsque la musique est ajouté dans la playlist.
+         content:
+           application/json:
+             schema:
+               type: object
+               properties:
+                 added:
+                   type: boolean
+       "401":
+          description: Non authorizé
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthorized"
+       "409":
+          description: La musique est déjà dans la playlist
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Conflict"
+    # get:
+    #  tags:
+    #   - playlists-music
+    #  description: Route pour retourner toutes les playlist d'un utilisateur.
+    #  responses:
+    #    "200":
+    #      description: Réponse contenant les informations conçernant la ou les playlist(s) retournée(s).
+    #      content:
+    #        application/json:
+    #          schema:
+    #            type: object
+    #            properties:
+    #             id:
+    #               type: integer
+    #             name:
+    #               type: string
+    #             description:
+    #               type: string
+    #             followers:
+    #               type: string
+                 
+    #    "401":
+    #       description: Non authorizé
+    #       content:
+    #         application/json:
+    #           schema:
+    #             $ref: "#/components/schemas/Unauthorized"
+    #    "404":
+    #       description: Non trouvé
+    #       content:
+    #         application/json:
+    #           schema:
+    #             $ref: "#/components/schemas/NotFound"
+
 components:
   securitySchemes:
     bearerAuth:
