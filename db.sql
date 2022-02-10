@@ -4,7 +4,7 @@ DROP TABLE IF EXISTS music;
 CREATE TABLE music (
   id integer PRIMARY KEY AUTO_INCREMENT,
   title varchar(50) NOT NULL,
-  file_name varchar(50) NOT NULL,
+  file_name varchar(100) NOT NULL,
   duration float NOT NULL,
   plays bigint NOT NULL DEFAULT 0,
   uploaded datetime DEFAULT NOW(),
