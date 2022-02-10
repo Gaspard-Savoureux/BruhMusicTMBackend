@@ -61,9 +61,7 @@ router.get('/', async (req, res) => {
   const { title } = req.query;
   const searchRelatedExist = await db('music').where('title', 'like', `%${title}%`);
 
-  if (!searchRelatedExist) {
-    return res.status(404).send({ message: 'Aucun résultats retourner pour cette recherche' });
-  }
+  if (!searchRelatedExist) return res.status(404).send({ message: 'Aucun résultats retourner pour cette recherche' });
 
   return res.status(201).send(searchRelatedExist);
 });
@@ -74,9 +72,7 @@ router.get('/:id', async (req, res) => {
 
   const music = await db('music').where('id', id).first();
 
-  if (!music) {
-    return res.status(404).send({ message: 'Aucun résultats retourner pour cette recherche' });
-  }
+  if (!music) return res.status(404).send({ message: 'Aucun résultats retourner pour cette recherche' });
 
   return res.status(201).send({ music });
 });

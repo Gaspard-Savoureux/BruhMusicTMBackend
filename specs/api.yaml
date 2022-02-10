@@ -638,6 +638,62 @@ paths:
               schema:
                 $ref: "#/components/schemas/NotFound"
 
+  /album:
+    post:
+     tags:
+       - album
+     security:
+       - bearerAuth: []
+     description: Route ajouter un album.
+     responses:
+       "201":
+         description: Réponse lorsque l'album est créé.
+         content:
+           application/json:
+             schema:
+               type: object
+               properties:
+                 created:
+                   type: boolean
+       "401":
+          description: Non authorizé
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthorized"
+       "409":
+          description: l'utilisateur existe déjà
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Conflict"
+    get:
+     tags:
+      - album
+     description: Route pour retourner toutes les playlist d'un utilisateur.
+     responses:
+       "200":
+         description: Réponse contenant les informations conçernant la ou les playlist(s) retournée(s).
+         content:
+           application/json:
+             schema:
+              type: array
+              items:
+                $ref: "#/components/schemas/Playlist"
+                 
+       "401":
+          description: Non authorizé
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthorized"
+       "404":
+          description: Non trouvé
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFound"
+
 components:
   securitySchemes:
     bearerAuth:

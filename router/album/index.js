@@ -13,18 +13,32 @@ router.post('/', authMiddleware, async (req, res) => {
     genre,
     musicLabel,
     releaseDate,
+    musicIds, // [] = list des id des musiques à update
   } = req.body;
 
   const albumExist = await db('album').where('name', name).first();
 
   if (albumExist) return res.status(409).send({ message: 'un album ayant ce nom existe déjà' });
 
-  await db('album').insert({
+  const albumId = await db('album').insert({
     name,
     genre,
     musicLabel,
     releaseDate,
   });
+
+  let whereId;
+  const lenght = musicIds.lenght();
+
+  if (lenght > 1) {
+    for (let i = 0; i < lenght; i += 1) {
+      whereId += `OR WHERE id = ${musicIds[i]}`;
+    }
+  } else {
+    whereId = `WHERE id = ${musicIds[0]}`;
+  }
+
+  await db.raw(`UPDATE music SET album_id = ${albumId} ${whereId}`);
 
   return res.status(201).send({ created: true });
 });
