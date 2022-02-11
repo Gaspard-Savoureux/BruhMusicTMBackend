@@ -61,8 +61,8 @@ router.get('/', async (req, res) => {
   const { title } = req.query;
   const searchRelatedExist = await db('music').where('title', 'like', `%${title}%`);
 
-  console.log(searchRelatedExist.length());
-  if (searchRelatedExist.length() === 0) return res.status(404).send({ message: 'Aucun résultats retourner pour cette recherche' });
+  const length = await searchRelatedExist.length();
+  if (length === 0) return res.status(404).send({ message: 'Aucun résultats retourner pour cette recherche' });
 
   return res.status(201).send(searchRelatedExist);
 });
