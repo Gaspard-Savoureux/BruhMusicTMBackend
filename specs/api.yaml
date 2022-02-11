@@ -301,6 +301,8 @@ paths:
                properties:
                  music:
                    type: array
+                   items:
+                     $ref: "#/components/schemas/Music"
        "401":
           description: Non authorizé
           content:
