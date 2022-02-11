@@ -25,8 +25,7 @@ router.post('/', authMiddleware, async (req, res) => {
   const albumId = await db('album').insert({
     name,
     genre,
-    musicLabel,
-    releaseDate,
+    release_date: releaseDate,
     user_id: req.user.userId,
   });
 
