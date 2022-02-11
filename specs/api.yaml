@@ -730,6 +730,70 @@ paths:
               schema:
                 $ref: "#/components/schemas/NotFound"
 
+  /album/{id}:
+    get:
+     tags:
+      - album
+     description: Route pour retourner les informations d'un album.
+     parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: L'id de l'album cherché.
+     responses:
+       "200":
+         description: informations de l'album choisis.
+         content:
+           application/json:
+             schema:
+                $ref: "#/components/schemas/Album"
+       "401":
+          description: Non authorizé
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthorized"
+       "404":
+          description: Non trouvé
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFound"
+    delete:
+      tags:
+        - album
+      summary: Route pour supprimer une playlist.
+      security:
+        - bearerAuth: []
+      description: Route supprimant une playlist en via le id de celle-ci.
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: L'id de la playlist cherchée.
+      responses:
+        "200":
+          description: retourne un message confirmant le résultat désiré.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Success"
+        "401":
+          description: Non authorizé
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthorized"
+        "404":
+          description: Non trouvé
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFound"
 components:
   securitySchemes:
     bearerAuth:
@@ -845,6 +909,21 @@ components:
         album_id:
           type: integer
           nullable: true
+    Album:
+      type: object
+      properties:
+        name:
+          type: string
+        genre:
+          type: string
+        releaseDate:
+          type: string 
+          format: date
+          example: "2019-05-17" 
+        musicIds:
+          type: array
+          items: 
+            type: integer 
     Success:
       type: object
       properties:
