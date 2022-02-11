@@ -30,7 +30,7 @@ router.post('/', authMiddleware, async (req, res) => {
   });
 
   let whereId;
-  console.log(musicIds, typeof musicIds);
+  console.log(musicIds.length);
   const length = musicIds.length;
 
   if (length > 1) {
