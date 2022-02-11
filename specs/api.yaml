@@ -701,7 +701,13 @@ paths:
     get:
      tags:
       - album
-     description: Route pour retourner toutes les playlist d'un utilisateur.
+     description: Route pour retourner les albums correspondant à un nom données
+     parameters:
+        - in: query
+          name: name
+          schema:
+            type: string
+          description: critère de recherche pour retourner les chansons.
      responses:
        "200":
          description: Réponse contenant les informations conçernant la ou les playlist(s) retournée(s).

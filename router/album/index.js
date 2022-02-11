@@ -7,7 +7,6 @@ const db = require('../../modules/db');
 
 // TODO ajouter les vérifications au routes
 
-// TODO à tester
 router.post('/', authMiddleware, async (req, res) => {
   const {
     //
@@ -22,8 +21,6 @@ router.post('/', authMiddleware, async (req, res) => {
 
   if (albumExist) return res.status(409).send({ message: 'un album ayant ce nom existe déjà' });
   if (musicIds.length === 0) return res.status(400).send({ message: 'aucun id de music fournis' });
-  if (!name) return res.status(400).send({ message: 'aucun nom fournis' });
-  if (!genre) return res.status(400).send({ message: 'aucun genre fournis' });
 
   const albumId = await db('album').insert({
     name,
