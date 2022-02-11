@@ -686,6 +686,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Unauthorized"
+       "400":
+          description: Mauvaise requete
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequest"
        "409":
           description: l'utilisateur existe déjà
           content:
@@ -850,6 +856,11 @@ components:
         message:
           type: string
     Conflict:
+      type: object
+      properties:
+        message:
+          type: string
+    BadRequest:
       type: object
       properties:
         message:
