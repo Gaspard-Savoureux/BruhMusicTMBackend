@@ -33,14 +33,12 @@ router.post('/', authMiddleware, async (req, res) => {
   let whereId;
   const length = musicIds.length - 1;
 
-  if (length > 0) {
-    for (let i = 0; i < length; i += 1) {
-      whereId += `OR id = ${musicIds[i + 1]}`;
-    }
-  }
-  const query = `UPDATE music SET album_id = ${albumId} WHERE id = ${musicIds[0]} ${whereId}`;
-  console.log(query);
-  await db.raw(`UPDATE music SET album_id = ${albumId} WHERE id = ${musicIds[0]} ${whereId}`);
+  musicIds.forEach((id) => {
+    whereId += id = 0 ? `WHERE id = ${musicIds[0]}` : `OR id = ${musicIds[id]}`;
+  });
+
+  console.log(whereId);
+  await db.raw(`UPDATE music SET album_id = ${albumId} ${whereId}`);
 
   return res.status(201).send({ created: true });
 });
