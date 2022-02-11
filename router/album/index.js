@@ -49,7 +49,7 @@ router.get('/', async (req, res) => {
 
   if (!searchRelatedExist) return res.status(404).send({ message: 'Aucun résultats retourner pour cette recherche' });
 
-  return res.status(201).send(searchRelatedExist);
+  return res.status(200).send(searchRelatedExist);
 });
 
 // obtient une musique selon son id
@@ -62,7 +62,7 @@ router.get('/:id', async (req, res) => {
     return res.status(404).send({ message: 'Aucun résultats retourner pour cette recherche' });
   }
 
-  return res.status(201).send({ music });
+  return res.status(200).send({ music });
 });
 
 // obtient toute les chansons liées à un user selon son id.
