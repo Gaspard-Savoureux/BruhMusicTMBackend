@@ -5,6 +5,8 @@ const authMiddleware = require('../../modules/auth-middleware');
 
 const db = require('../../modules/db');
 
+// TODO ajouter les vérifications au routes
+
 // TODO à tester
 router.post('/', authMiddleware, async (req, res) => {
   const {
