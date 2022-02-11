@@ -30,7 +30,7 @@ router.post('/', authMiddleware, async (req, res) => {
     user_id: req.user.userId,
   });
 
-  let whereId;
+  let whereId = '';
 
   musicIds.forEach((id) => {
     console.log(whereId);
