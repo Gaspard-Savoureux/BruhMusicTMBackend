@@ -39,7 +39,8 @@ CREATE TABLE album (
   name varchar(100) NOT NULL,
   genre varchar(50) NOT NULL,
   music_label varchar(100) NOT NULL,
-  release_date date NOT NULL
+  release_date date NOT NULL,
+  cover varchar(100) DEFAULT NULL,
 );
 
 ALTER TABLE music
