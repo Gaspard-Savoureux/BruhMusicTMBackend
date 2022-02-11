@@ -30,10 +30,10 @@ router.post('/', authMiddleware, async (req, res) => {
   });
 
   let whereId;
-  const lenght = musicIds.lenght();
+  const length = musicIds.length();
 
-  if (lenght > 1) {
-    for (let i = 0; i < lenght; i += 1) {
+  if (length > 1) {
+    for (let i = 0; i < length; i += 1) {
       whereId += `OR WHERE id = ${musicIds[i]}`;
     }
   } else {
