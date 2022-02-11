@@ -35,13 +35,13 @@ router.post('/', authMiddleware, async (req, res) => {
 
   if (length > 1) {
     for (let i = 0; i < length; i += 1) {
-      whereId += `OR WHERE id = ${musicIds[i]}`;
+      whereId += `OR id = ${musicIds[i]}`;
     }
   } else {
-    whereId = `WHERE id = ${musicIds[0]}`;
+    whereId = `id = ${musicIds[0]}`;
   }
 
-  await db.raw(`UPDATE music SET album_id = ${albumId} ${whereId}`);
+  await db.raw(`UPDATE music SET album_id = ${albumId} WHERE ${whereId}`);
 
   return res.status(201).send({ created: true });
 });
