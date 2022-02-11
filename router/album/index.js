@@ -34,8 +34,8 @@ router.post('/', authMiddleware, async (req, res) => {
   const length = musicIds.length - 1;
 
   if (length > 0) {
-    for (let i = 1; i < length; i += 1) {
-      whereId += `OR id = ${musicIds[i]}`;
+    for (let i = 0; i < length; i += 1) {
+      whereId += `OR id = ${musicIds[i + 1]}`;
     }
   }
   const query = `UPDATE music SET album_id = ${albumId} WHERE id = ${musicIds[0]} ${whereId}`;
