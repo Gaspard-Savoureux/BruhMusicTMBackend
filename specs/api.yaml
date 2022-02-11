@@ -645,6 +645,32 @@ paths:
      security:
        - bearerAuth: []
      description: Route ajouter un album.
+     requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+                - genre
+                - releaseDate
+                - musicIds
+              properties:
+                name:
+                  type: string
+                genre:
+                  type: string
+                releaseDate:
+                  type: string 
+                  format: date-time
+                  pattern: /([0-9]{4})-(?:[0-9]{2})-([0-9]{2})/
+                  example: "2019-05-17" 
+                musicIds:
+                  type: array
+                  items: 
+                    type: integer 
+    
      responses:
        "201":
          description: Réponse lorsque l'album est créé.
