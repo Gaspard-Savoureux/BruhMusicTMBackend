@@ -27,6 +27,7 @@ router.post('/', authMiddleware, async (req, res) => {
     genre,
     musicLabel,
     releaseDate,
+    user_id: req.user.userId,
   });
 
   let whereId;
