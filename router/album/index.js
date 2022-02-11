@@ -60,7 +60,7 @@ router.get('/:id', async (req, res) => {
   if (!album) return res.status(404).send({ message: "Aucun album ne correspond à l'id donné" });
 
   const musicList = await db('music').where('album_id', id);
-  if (musicIds.length === 0) return res.status(404).send({ message: 'Aucun résultats retourner pour cette recherche' });
+  if (musicList.length === 0) return res.status(404).send({ message: 'Aucun résultats retourner pour cette recherche' });
 
   const infoAlbum = { ...album, musicList };
 

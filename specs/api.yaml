@@ -748,7 +748,20 @@ paths:
          content:
            application/json:
              schema:
-                $ref: "#/components/schemas/Album"
+              type: object
+              properties:
+                name:
+                  type: string
+                genre:
+                  type: string
+                releaseDate:
+                  type: string 
+                  format: date
+                  example: "2019-05-17" 
+                musicList:
+                  type: array
+                  items: 
+                    $ref: "#/components/schemas/Music" 
        "401":
           description: Non authorizé
           content:
