@@ -52,16 +52,17 @@ router.get('/', async (req, res) => {
 });
 
 // Route retournant les information d'un album ainsi que son contenu correspondant au id
+// TODO à terminer
 router.get('/:id', async (req, res) => {
   const { id } = req.params;
 
   const album = await db('album').where('id', id);
   if (!album) return res.status(404).send({ message: "Aucun album ne correspond à l'id donné" });
 
-  const musicIds = await db('music').select('id').where('album_id', id);
+  const musicList = await db('music').where('album_id', id);
   if (musicIds.length === 0) return res.status(404).send({ message: 'Aucun résultats retourner pour cette recherche' });
 
-  const infoAlbum = { ...album, musicIds };
+  const infoAlbum = { ...album, musicList };
 
   return res.status(200).send({ infoAlbum });
 });
