@@ -33,7 +33,7 @@ router.post('/', authMiddleware, async (req, res) => {
   let whereId;
   const length = musicIds.length - 1;
 
-  if (length > 1) {
+  if (length > 0) {
     for (let i = 1; i < length; i += 1) {
       whereId += `OR id = ${musicIds[i]}`;
     }
