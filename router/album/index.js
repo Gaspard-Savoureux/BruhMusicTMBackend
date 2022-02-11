@@ -38,7 +38,8 @@ router.post('/', authMiddleware, async (req, res) => {
       whereId += `OR id = ${musicIds[i]}`;
     }
   }
-
+  const query = `UPDATE music SET album_id = ${albumId} WHERE id = ${musicIds[0]} ${whereId}`;
+  console.log(query);
   await db.raw(`UPDATE music SET album_id = ${albumId} WHERE id = ${musicIds[0]} ${whereId}`);
 
   return res.status(201).send({ created: true });
