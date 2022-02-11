@@ -297,12 +297,9 @@ paths:
          content:
            application/json:
              schema:
-               type: object
-               properties:
-                 music:
-                   type: array
-                   items:
-                     $ref: "#/components/schemas/Music"
+                type: array
+                items:
+                  $ref: "#/components/schemas/Music"
        "401":
           description: Non authorizé
           content:
