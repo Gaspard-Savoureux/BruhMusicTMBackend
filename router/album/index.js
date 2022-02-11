@@ -34,7 +34,7 @@ router.post('/', authMiddleware, async (req, res) => {
   const length = musicIds.length - 1;
 
   musicIds.forEach((id) => {
-    whereId += id === musicIds[0] ? `WHERE id = ${musicIds[0]} ` : `OR id = ${musicIds[id]} `;
+    whereId += id === musicIds[0] ? `WHERE id = ${id} ` : `OR id = ${id} `;
   });
 
   console.log(whereId);
