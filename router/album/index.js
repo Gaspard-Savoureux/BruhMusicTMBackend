@@ -47,7 +47,7 @@ router.get('/', async (req, res) => {
   const { name } = req.query;
   const searchRelatedExist = await db('album').where('name', 'like', `%${name}%`);
 
-  if (!searchRelatedExist) return res.status(404).send({ message: 'Aucun résultats retourner pour cette recherche' });
+  if (searchRelatedExist.length === 0) return res.status(404).send({ message: 'Aucun résultats retourner pour cette recherche' });
 
   return res.status(200).send(searchRelatedExist);
 });
