@@ -41,8 +41,7 @@ router.post('/', authMiddleware, async (req, res) => {
   return res.status(201).send({ created: true });
 });
 
-// TODO à tester
-// TODO à finir
+// Route retournant les albums correspondant à un nom donné
 router.get('/', async (req, res) => {
   const { name } = req.query;
   const searchRelatedExist = await db('album').where('name', 'like', `%${name}%`);
@@ -52,17 +51,19 @@ router.get('/', async (req, res) => {
   return res.status(200).send(searchRelatedExist);
 });
 
-// obtient une musique selon son id
+// Route retournant les information d'un album ainsi que son contenu correspondant au id
 router.get('/:id', async (req, res) => {
   const { id } = req.params;
 
-  const music = await db('music').where('id', id).first();
+  const album = await db('album').where('id', id);
+  if (!album) return res.status(404).send({ message: "Aucun album ne correspond à l'id donné" });
 
-  if (!music) {
-    return res.status(404).send({ message: 'Aucun résultats retourner pour cette recherche' });
-  }
+  const musicIds = await db('music').select('id').where('album_id', id);
+  if (musicIds.length === 0) return res.status(404).send({ message: 'Aucun résultats retourner pour cette recherche' });
 
-  return res.status(200).send({ music });
+  const infoAlbum = { ...album, musicIds };
+
+  return res.status(200).send({ infoAlbum });
 });
 
 // obtient toute les chansons liées à un user selon son id.
