@@ -21,6 +21,7 @@ router.post('/', authMiddleware, async (req, res) => {
   const albumExist = await db('album').where('name', name).first();
 
   if (albumExist) return res.status(409).send({ message: 'un album ayant ce nom existe déjà' });
+  if (musicIds.length === 0) return res.status(400).send({ message: 'aucun id de music fournis' });
 
   const albumId = await db('album').insert({
     name,
@@ -30,18 +31,15 @@ router.post('/', authMiddleware, async (req, res) => {
   });
 
   let whereId;
-  console.log(musicIds.length);
   const length = musicIds.length - 1;
 
   if (length > 1) {
-    for (let i = 0; i < length; i += 1) {
+    for (let i = 1; i < length; i += 1) {
       whereId += `OR id = ${musicIds[i]}`;
     }
-  } else {
-    whereId = `id = ${musicIds[0]}`;
   }
 
-  await db.raw(`UPDATE music SET album_id = ${albumId} WHERE ${whereId}`);
+  await db.raw(`UPDATE music SET album_id = ${albumId} WHERE id = ${musicIds[0]} ${whereId}`);
 
   return res.status(201).send({ created: true });
 });
