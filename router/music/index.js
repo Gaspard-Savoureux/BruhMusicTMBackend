@@ -63,7 +63,7 @@ router.get('/', async (req, res) => {
 
   console.log(searchRelatedExist);
 
-  if (!searchRelatedExist) return res.status(404).send({ message: 'Aucun résultats retourner pour cette recherche' });
+  if (!searchRelatedExist[0]) return res.status(404).send({ message: 'Aucun résultats retourner pour cette recherche' });
 
   return res.status(201).send(searchRelatedExist);
 });
