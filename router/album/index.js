@@ -6,13 +6,13 @@ const authMiddleware = require('../../modules/auth-middleware');
 const db = require('../../modules/db');
 
 // TODO ajouter les vérifications au routes
+// Genre les shits des erreurs 400, quoi que optionnel
 
 router.post('/', authMiddleware, async (req, res) => {
   const {
     //
     name,
     genre,
-    musicLabel,
     releaseDate,
     musicIds, // [] = list des id des musiques à update
   } = req.body;
@@ -35,7 +35,6 @@ router.post('/', authMiddleware, async (req, res) => {
     whereId += id === musicIds[0] ? `WHERE id = ${id} ` : `OR id = ${id} `;
   });
 
-  console.log(whereId);
   await db.raw(`UPDATE music SET album_id = ${albumId} ${whereId}`);
 
   return res.status(201).send({ created: true });
@@ -52,7 +51,6 @@ router.get('/', async (req, res) => {
 });
 
 // Route retournant les information d'un album ainsi que son contenu correspondant au id
-// TODO à terminer
 router.get('/:id', async (req, res) => {
   const { id } = req.params;
 
@@ -67,38 +65,30 @@ router.get('/:id', async (req, res) => {
   return res.status(200).send({ infoAlbum });
 });
 
-// obtient toute les chansons liées à un user selon son id.
-// si aucun id ne lui est données renvoi les chansons liées à son propres id
+// obtient toute les albums liées à un user selon son id.
+// si aucun id ne lui est données renvoi les albums liées à son propres id
 router.get('/user/:userId', async (req, res) => {
   const { userId } = req.params.userId ? req.params : req.user.userId;
 
-  const music = await db('music').where('user_id', userId);
+  const album = await db('album').where('user_id', userId);
+  if (!album) return res.status(404).send({ message: "Aucun album ne correspond à l'id donné" });
 
-  if (!music) {
-    return res.status(404).send({ message: 'Aucun résultats retourner pour cette recherche' });
-  }
-
-  return res.status(201).send({ music });
+  return res.status(200).json(album);
 });
 
 // supprime une chanson en prenant son id comme paramètre
 router.delete('/:id', authMiddleware, async (req, res) => {
   const { id } = req.params;
 
-  const music = await db('music').where('id', id).first();
+  const album = await db('album').where('id', id).first();
 
-  const { status, message } = await ownMusic(id, req.user.userId);
-  if (status) return res.status(status).send({ message });
+  if (!album) return res.status(404).send({ message: 'album inexistant' });
+  if (req.user.userId !== album.user_id) return res.status(401).send({ message: 'ne possède pas les permissions pour supprimer cet album' });
 
-  await db('music').where('id', id).del();
+  await db('album').where('id', id).del();
 
-  fs.unlink(`public/uploads/${music.file_name}`, (err) => {
-    if (err) {
-      throw err;
-    }
+  await db('music').update('album_id', null).where('id', id);
 
-    console.log('File is deleted.');
-  });
   return res.status(200).send({ deleted: true });
 });
 

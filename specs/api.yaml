@@ -807,6 +807,41 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/NotFound"
+
+  /album/user/{id}:
+    get:
+     tags:
+      - album
+     description: Route pour retourner les albums d'un user.
+     parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: L'id d'un user.
+     responses:
+       "200":
+         description: renvoie tout les albums d'un user.
+         content:
+           application/json:
+             schema:
+              type: array
+              items:
+                $ref: "#/components/schemas/Album"
+       "401":
+          description: Non authorizé
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthorized"
+       "404":
+          description: Non trouvé
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFound"
+
 components:
   securitySchemes:
     bearerAuth:
