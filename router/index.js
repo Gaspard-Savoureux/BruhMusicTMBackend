@@ -11,6 +11,7 @@ const music = require('./music');
 const usersPlaylist = require('./user-playlist');
 const playlistsMusic = require('./playlists-music');
 const album = require('./album');
+const favorite = require('./favorite');
 
 const router = Router();
 
@@ -34,6 +35,8 @@ router.use('/music', music);
 router.use('/user-playlist', usersPlaylist);
 
 router.use('/playlists-music', playlistsMusic);
+
+router.use('/favorite', favorite);
 
 router.use('/album', album);
 

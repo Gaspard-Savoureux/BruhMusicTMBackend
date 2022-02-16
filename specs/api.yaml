@@ -842,6 +842,111 @@ paths:
               schema:
                 $ref: "#/components/schemas/NotFound"
 
+  /favorite:
+    post:
+     tags:
+       - favorite
+     security:
+       - bearerAuth: []
+     description: Route ajouter une musique au favoris.
+     parameters:
+        - in: query
+          name: musicId
+          schema:
+            type: integer
+          description: le id de la musique à ajouter au favoris.
+     responses:
+       "200":
+         description: Réponse lorsque la musique est ajouté.
+         content:
+           application/json:
+             schema:
+               type: object
+               properties:
+                 added:
+                   type: boolean
+       "401":
+          description: Non authorizé
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthorized"
+       "400":
+          description: Mauvaise requete
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequest"
+       "409":
+          description: l'utilisateur existe déjà
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Conflict"
+    get:
+     tags:
+      - favorite
+     security:
+       - bearerAuth: []
+     description: Route pour retourner les favoris d'un utilisateur authentifier
+     responses:
+       "200":
+         description: Réponse contenant les musiques favorites d'un utilisateur.
+         content:
+           application/json:
+             schema:
+              type: array
+              items:
+                $ref: "#/components/schemas/Playlist"
+                 
+       "401":
+          description: Non authorizé
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthorized"
+       "404":
+          description: Non trouvé
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFound"
+    delete:
+     tags:
+      - favorite
+     security:
+       - bearerAuth: []
+     description: Route pour supprimer une musique des favoris
+     parameters:
+        - in: query
+          name: musicId
+          schema:
+            type: integer
+          description: le id de la musique à ajouter au favoris.
+     responses:
+       "200":
+         description: Réponse lorsque la musique est supprimé avec succès.
+         content:
+           application/json:
+             schema:
+              type: object
+              properties:
+                deleted:
+                  type: boolean
+                 
+       "401":
+          description: Non authorizé
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthorized"
+       "404":
+          description: Non trouvé
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFound"
+
 components:
   securitySchemes:
     bearerAuth:

@@ -45,7 +45,7 @@ module.exports = {
 
     if (alreadyInPlaylist) return { status: 409, message: 'musique déjà existante dans la playlist' };
 
-    return null;
+    return false;
   },
 
   // fonction vérifiant si un user possède une musique et si celle-ci existe

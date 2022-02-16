@@ -11,19 +11,21 @@ router.post('/create-token/', async (req, res) => {
   const regexEmail = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   const isEmail = regexEmail.test(userCred);
   const user = isEmail ? await db('user').where('email', userCred).first() : await db('user').where('username', userCred).first();
+  const favorite = await db('users_playlists') //
+    .join('playlist', 'users_playlists.playlist_id', 'playlist.id')
+    .where('playlist.name', 'favorite')
+    .where('users_playlists.user_id', user.id)
+    .first();
 
-  if (!user) {
-    return res.status(404).json({ message: 'Utilisateur non trouvé' });
-  }
+  if (!user) return res.status(404).json({ message: 'Utilisateur non trouvé' });
 
   const result = await bcrypt.compare(password, user.password);
-  if (!result) {
-    return res.status(401).json({ message: "Vous n'êtes pas autorizé" });
-  }
+  if (!result) return res.status(401).json({ message: "Vous n'êtes pas autorizé" });
 
   const token = jwt.sign(
     {
       userId: user.id,
+      favoriteId: favorite.id,
     },
     process.env.SECRET,
   );
