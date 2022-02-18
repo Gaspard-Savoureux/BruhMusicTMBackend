@@ -7,63 +7,78 @@ const fs = require('fs');
 const authMiddleware = require('../../modules/auth-middleware');
 
 const db = require('../../modules/db');
+const { upload } = require('../../modules/upload');
 const { ownMusic } = require('../../modules/verif');
 
-const storage = multer.diskStorage({
-  filename: (req, file, cb) => {
-    cb(null, `|-${req.user.userId}-|--${file.originalname}`);
-  },
-  destination: (req, file, cb) => {
-    cb(null, 'public/uploads');
-  },
-});
+// const storage = multer.diskStorage({
+//   filename: (req, file, cb) => {
+//     cb(null, `|-${req.user.userId}-|--${file.originalname}`);
+//   },
+//   destination: (req, file, cb) => {
+//     cb(null, 'public/uploads');
+//   },
+// });
 
-const fileFilter = (req, file, cb) => {
-  const fileTypes = /flac|wav/;
-  const mimetype = fileTypes.test(file.mimetype);
-  if (mimetype) return cb(null, true);
-  cb(null, false);
-  return cb(new Error('INVALID_TYPE'));
-};
+// const fileFilter = (req, file, cb) => {
+//   const fileTypes = /flac|wav/;
+//   const mimetype = fileTypes.test(file.mimetype);
+//   if (mimetype) return cb(null, true);
+//   cb(null, false);
+//   return cb(new Error('INVALID_TYPE'));
+// };
 
-const upload = multer({ storage, fileFilter });
+// const upload = multer({ storage, fileFilter });
 
 // Route pour upload les musiques et les remplacer/modifier
-router.post('/', authMiddleware, upload.single('file'), async (req, res) => {
-  const metadata = await mm.parseFile(`${req.file.path}`);
+router.post(
+  '/',
+  authMiddleware,
+  upload.fields([
+    { name: 'music', maxCount: 1 },
+    { name: 'image', maxCount: 1 },
+  ]),
+  async (req, res) => {
+    const { files } = req;
+    const music = files.music[0];
+    const image = files.image[0];
+    const metadata = await mm.parseFile(`${music.path}`);
 
-  const { originalname } = req.file;
-  const { duration } = metadata.format;
-  const { userId } = req.user;
-  const fileName = `|-${userId}-|--${originalname}`;
-  const title = originalname.substring(0, originalname.lastIndexOf('.'));
+    const { originalname } = music;
+    const { duration } = metadata.format;
+    const { userId } = req.user;
+    const fileName = `|-${userId}-|--${originalname}`;
+    const title = originalname.substring(0, originalname.lastIndexOf('.'));
 
-  const musicExists = await db('music').where('title', title).where('user_id', userId).first();
+    const musicExists = await db('music').where('title', title).where('user_id', userId).first();
 
-  const message = musicExists ? 'Successfully replaced file' : 'Successfully uploaded file';
+    const message = musicExists ? 'Successfully replaced file' : 'Successfully uploaded file';
 
-  if (musicExists) {
-    await db('music')
-      .update({
-        duration,
-        uploaded: new Date(),
-        file_name: fileName,
-      })
-      .where('title', title)
-      .where('user_id', userId);
+    // Query initial
+    let query = {
+      //
+      title,
+      duration,
+      user_id: userId,
+      file_name: fileName,
+    };
+
+    // Query si aucun photo donnée
+    if (image.filename) query = { ...query, image: image.filename };
+
+    if (musicExists) {
+      await db('music').update(query).where('title', title).where('user_id', userId);
+
+      return res.status(201).send({ message });
+    }
+
+    await db('music').insert({
+      ...query,
+      uploaded: new Date(),
+    });
 
     return res.status(201).send({ message });
-  }
-
-  await db('music').insert({
-    title,
-    duration,
-    user_id: userId,
-    file_name: fileName,
-  });
-
-  return res.status(201).send({ message });
-});
+  },
+);
 
 router.get('/', async (req, res) => {
   const { title } = req.query;
