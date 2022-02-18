@@ -61,8 +61,6 @@ router.get('/', async (req, res) => {
   const { title } = req.query;
   const searchRelatedExist = await db('music').where('title', 'like', `%${title}%`);
 
-  if (!searchRelatedExist[0]) return res.status(404).send({ message: 'Aucun résultats retourner pour cette recherche' });
-
   return res.status(201).send(searchRelatedExist);
 });
 
@@ -88,7 +86,7 @@ router.get('/user/:userId', async (req, res) => {
     return res.status(404).send({ message: 'Aucun résultats retourner pour cette recherche' });
   }
 
-  return res.status(201).send({ music });
+  return res.status(201).json(music);
 });
 
 // supprime une chanson en prenant son id comme paramètre

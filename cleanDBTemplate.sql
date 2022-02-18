@@ -38,7 +38,6 @@ CREATE TABLE album (
   id integer PRIMARY KEY AUTO_INCREMENT,
   name varchar(100) NOT NULL,
   genre varchar(50) NOT NULL,
-  music_label varchar(100) NOT NULL,
   release_date date NOT NULL,
   cover varchar(100) DEFAULT NULL,
 );
