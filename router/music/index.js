@@ -18,7 +18,15 @@ const storage = multer.diskStorage({
   },
 });
 
-const upload = multer({ storage });
+const fileFilter = (req, file, cb) => {
+  const fileTypes = /flac|wav/;
+  const mimetype = fileTypes.test(file.mimetype);
+  if (mimetype) return cb(null, true);
+  cb(null, false);
+  return cb(new Error('INVALID_TYPE'));
+};
+
+const upload = multer({ storage, fileFilter });
 
 // Route pour upload les musiques et les remplacer/modifier
 router.post('/', authMiddleware, upload.single('file'), async (req, res) => {
