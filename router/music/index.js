@@ -2,32 +2,12 @@ const express = require('express');
 
 const router = express.Router();
 const mm = require('music-metadata');
-const multer = require('multer');
 const fs = require('fs');
 const authMiddleware = require('../../modules/auth-middleware');
 
 const db = require('../../modules/db');
 const { upload } = require('../../modules/upload');
 const { ownMusic } = require('../../modules/verif');
-
-// const storage = multer.diskStorage({
-//   filename: (req, file, cb) => {
-//     cb(null, `|-${req.user.userId}-|--${file.originalname}`);
-//   },
-//   destination: (req, file, cb) => {
-//     cb(null, 'public/uploads');
-//   },
-// });
-
-// const fileFilter = (req, file, cb) => {
-//   const fileTypes = /flac|wav/;
-//   const mimetype = fileTypes.test(file.mimetype);
-//   if (mimetype) return cb(null, true);
-//   cb(null, false);
-//   return cb(new Error('INVALID_TYPE'));
-// };
-
-// const upload = multer({ storage, fileFilter });
 
 // Route pour upload les musiques et les remplacer/modifier
 router.post(

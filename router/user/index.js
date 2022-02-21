@@ -5,7 +5,11 @@ const db = require('../../modules/db');
 const router = express.Router();
 
 router.get('/', async (req, res) => {
-  const user = await db('user').where('id', req.user.userId).first();
+  const { userId } = req.query.id ? req.query : req.user;
+
+  if (!userId) return res.status(404).json({ msg: 'aucun idée fourni et non authentifier' });
+
+  const user = await db('user').where('id', userId).first();
   delete user.password;
   return res.status(200).json(user);
 });

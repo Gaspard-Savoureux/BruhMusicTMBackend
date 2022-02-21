@@ -81,6 +81,12 @@ paths:
       security:
         - bearerAuth: []
       description: Route pour accèder aux informations de l'employé actuel grâce à son jeton d'authentification.
+      parameters:
+        - in: query
+          name: userId
+          schema:
+            type: integer
+          description: le id d'un utilisateur.
       responses:
         "200":
           description: retourne un(e) employé(e) avec leurs informations.
