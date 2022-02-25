@@ -3,6 +3,7 @@ const express = require('express');
 const router = express.Router();
 const authMiddleware = require('../../modules/auth-middleware');
 
+const { upload } = require('../../modules/upload');
 const db = require('../../modules/db');
 
 // TODO ajouter les vérifications au routes
@@ -44,7 +45,10 @@ router.post('/', authMiddleware, async (req, res) => {
 router.get('/', async (req, res) => {
   const { name } = req.query;
   const searchRelatedExist = await db('album').where('name', 'like', `%${name}%`);
-
+  if (!name) {
+    const topAlbum = await db('album').orderBy('consulted').limit(20);
+    return res.status(200).send(topAlbum);
+  }
   return res.status(200).send(searchRelatedExist);
 });
 
@@ -72,6 +76,18 @@ router.get('/user/:userId', async (req, res) => {
   if (!album) return res.status(404).send({ message: "Aucun album ne correspond à l'id donné" });
 
   return res.status(200).json(album);
+});
+
+//TODO finish this atrocity
+router.put('/cover/', upload.fields([{ name: 'image', maxCount: 1 }]), async (req, res) => {
+  if (!req.files.image) return res.status(400).json({ message: 'aucune image fournis' });
+  const file = req.files.image[0];
+  const { originalname } = file;
+  const { userId } = req.user;
+  const image = `+-${userId}-+--${originalname}`;
+
+  await db('album').update({ image }).where('id', userId);
+  return res.status(200).json({ modified: true });
 });
 
 // supprime une chanson en prenant son id comme paramètre

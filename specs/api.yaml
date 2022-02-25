@@ -357,6 +357,8 @@ paths:
     get:
      tags:
       - Music
+     security:
+        - bearerAuth: []
      description: Route pour retourner les informations les musics.
      parameters:
         - in: path
@@ -364,7 +366,7 @@ paths:
           schema:
             type: integer
           required: true
-          description: L'id de la musique cherchée.
+          description: L'id de l'utilisateur recherché.
      responses:
        "201":
          description: Réponse retournant les informations conçernant la musique choix.

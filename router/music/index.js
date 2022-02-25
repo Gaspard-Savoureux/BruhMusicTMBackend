@@ -80,11 +80,11 @@ router.get('/:id', async (req, res) => {
 
 // obtient toute les chansons liées à un user selon son id.
 // si aucun id ne lui est données renvoi les chansons liées à son propres id
-router.get('/user/:userId', async (req, res) => {
-  const { userId } = req.params.userId ? req.params : req.user.userId;
+router.get('/user/:userId', authMiddleware, async (req, res) => {
+  const userId = parseInt(req.params.userId, 10);
+  const id = userId === 0 ? req.user.userId : userId;
 
-  const music = await db('music').where('user_id', userId);
-
+  const music = await db('music').where('user_id', id);
   if (!music) {
     return res.status(404).send({ message: 'Aucun résultats retourner pour cette recherche' });
   }

@@ -5,7 +5,6 @@ const fileTypes = /flac|wav|jpeg|jpg|png|gif/;
 
 const storage = multer.diskStorage({
   filename: (req, file, cb) => {
-    console.log(req, file);
     const filename = audioTypes.test(file.mimetype) ? `|-${req.user.userId}-|--${file.originalname}` : `+-${req.user.userId}-+--${file.originalname}`;
     cb(null, filename);
   },
