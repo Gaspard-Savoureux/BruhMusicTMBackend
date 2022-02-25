@@ -12,6 +12,7 @@ const usersPlaylist = require('./user-playlist');
 const playlistsMusic = require('./playlists-music');
 const album = require('./album');
 const favorite = require('./favorite');
+const cover = require('./cover');
 
 const router = Router();
 
@@ -39,5 +40,6 @@ router.use('/playlists-music', playlistsMusic);
 router.use('/favorite', favorite);
 
 router.use('/album', album);
+router.use('/cover', authMiddleware, cover);
 
 module.exports = router;

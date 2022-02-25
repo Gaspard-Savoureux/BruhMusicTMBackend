@@ -884,6 +884,57 @@ paths:
               schema:
                 $ref: "#/components/schemas/NotFound"
 
+  /cover/{albumId}:
+    put:
+      tags:
+        - cover
+      summary: Route pour changer le cover d'un album
+      security:
+        - bearerAuth: []
+      description: Route pour changer le cover d'un album
+      parameters:
+        - in: path
+          name: albumId
+          schema:
+            type: integer
+          required: true
+          description: L'id de l'album.
+      # requestBody:
+      #   required: true
+      #   content:
+      #     multipart/formdata:
+      #       schema:
+      #         type: object
+      #         properties:
+      #           image:
+      #             type: string
+      #             format: file
+      responses:
+        "200":
+          description: retourne un message de succès.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  modified:
+                    type: boolean
+        "400":
+          description: formulaire invalide
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        "404":
+          description: Non trouvé
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFound"
+
   /album/user/{id}:
     get:
      tags:

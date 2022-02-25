@@ -62,7 +62,7 @@ router.put('/profileImage', upload.fields([{ name: 'image', maxCount: 1 }]), asy
   const file = req.files.image[0];
   const { originalname } = file;
   const { userId } = req.user;
-  const image = `+-${userId}-+--${originalname}`;
+  const image = `++${userId}++--${originalname}`;
 
   await db('user').update({ image }).where('id', userId);
   return res.status(200).json({ modified: true });

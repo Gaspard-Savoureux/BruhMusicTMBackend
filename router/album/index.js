@@ -79,14 +79,18 @@ router.get('/user/:userId', async (req, res) => {
 });
 
 //TODO finish this atrocity
-router.put('/cover/', upload.fields([{ name: 'image', maxCount: 1 }]), async (req, res) => {
-  if (!req.files.image) return res.status(400).json({ message: 'aucune image fournis' });
-  const file = req.files.image[0];
+router.put('/cover', authMiddleware, upload.fields([{ name: 'cover', maxCount: 1 }]), async (req, res) => {
+  if (!req.files.cover) return res.status(400).json({ message: 'aucune image fournis' });
+  const { albumId } = req.params;
+  const file = req.files.cover[0];
   const { originalname } = file;
   const { userId } = req.user;
-  const image = `+-${userId}-+--${originalname}`;
+  const image = `+-+${userId}+-+--${originalname}`;
 
-  await db('album').update({ image }).where('id', userId);
+  await db('album') //
+    .update({ image })
+    .where('userId', userId)
+    .where('id', albumId);
   return res.status(200).json({ modified: true });
 });
 
