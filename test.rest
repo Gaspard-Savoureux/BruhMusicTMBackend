@@ -1,0 +1,16 @@
+PUT http://localhost:3000/user HTTP/1.1
+Content-Type: multipart/mixed;
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImZhdm9yaXRlSWQiOjEsImlhdCI6MTY0NTc5OTg3NH0.KptMMD_hayXoXyhTxAtzu3kVdJFK06T30LPRDqxas54
+
+# Content-Disposition: form-data; name="newPassword"
+# Content-Type: text/plain
+# 1234
+
+Content-Disposition: form-data; name="profile"
+Content-Type: application/json
+{
+  "newPassword": "12345"
+}
+
+Content-Disposition: form-data; name="image "; filename="image1.png"
+Content-Type: application/octet-stream

@@ -128,6 +128,19 @@ paths:
       security:
         - bearerAuth: []
       description: Route pour accèder aux informations de l'employé actuel grâce à son jeton d'authentification.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                newEmail: 
+                  type: string
+                newPassword:
+                  type: string
+                newUsername:
+                  type: string
       responses:
         "200":
           description: retourne un(e) employé(e) avec leurs informations.
@@ -135,6 +148,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Success'
+        "400":
+          description: formulaire invalide
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
         "404":
           description: Non trouvé
           content:
@@ -151,11 +173,57 @@ paths:
       description: Route supprimant un user en obtenant son id via le token fournit.
       responses:
         "200":
-          description: retourne un(e) employé(e) avec leurs informations.
+          description: retourne un message de succès.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Success"
+                type: object
+                properties:
+                  modified:
+                    type: boolean
+        "404":
+          description: Non trouvé
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFound"
+  /user/profileImage:
+    put:
+      tags:
+        - User
+      summary: Route pour accèder aux informations de l'utilisateur actuel.
+      security:
+        - bearerAuth: []
+      description: Route pour accèder aux informations de l'employé actuel grâce à son jeton d'authentification.
+      # requestBody:
+      #   required: true
+      #   content:
+      #     multipart/formdata:
+      #       schema:
+      #         type: object
+      #         properties:
+      #           image:
+      #             type: string
+      #             format: file
+      responses:
+        "200":
+          description: retourne un message de succès.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  modified:
+                    type: boolean
+        "400":
+          description: formulaire invalide
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
         "404":
           description: Non trouvé
           content:

@@ -2,6 +2,8 @@ const express = require('express');
 const bcrypt = require('bcrypt');
 const db = require('../../modules/db');
 
+const { upload } = require('../../modules/upload');
+
 const router = express.Router();
 
 router.get('/', async (req, res) => {
@@ -53,6 +55,17 @@ router.put('/', async (req, res) => {
   }
 
   return res.status(200).json({ modified: false });
+});
+
+router.put('/profileImage', upload.fields([{ name: 'image', maxCount: 1 }]), async (req, res) => {
+  if (!req.files.image) return res.status(400).json({ message: 'aucune image fournis' });
+  const file = req.files.image[0];
+  const { originalname } = file;
+  const { userId } = req.user;
+  const image = `+-${userId}-+--${originalname}`;
+
+  await db('user').update({ image }).where('id', userId);
+  return res.status(200).json({ modified: true });
 });
 
 router.delete('/', async (req, res) => {

@@ -54,6 +54,7 @@ CREATE TABLE user (
   id integer PRIMARY KEY AUTO_INCREMENT,
   username varchar(50) NOT NULL,
   email varchar(50) NOT NULL,
+  image varchar(120) DEFAULT NULL,
   password varchar(120) NOT NULL,
   followers integer DEFAULT 0,
   following integer DEFAULT 0,
