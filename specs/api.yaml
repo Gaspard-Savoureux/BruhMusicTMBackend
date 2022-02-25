@@ -238,7 +238,8 @@ paths:
        - Music
      security:
        - bearerAuth: []
-     description: Route pour uploader les musics.
+     summary: Route pour téléverser les musiques.
+     description: Route pour téléverser les musiques.
      responses:
        "201":
          description: Réponse lorsque la musique est créé.
@@ -258,7 +259,8 @@ paths:
     get:
      tags:
       - Music
-     description: Route pour retourner toutes les musics ou les musiques correspondant à la recherche.
+     summary: Route pour retourner toutes les musiques ou les musiques correspondant à la recherche.
+     description: Route pour retourner toutes les musiques ou les musiques correspondant à la recherche.
      parameters:
         - in: query
           name: title
@@ -289,7 +291,8 @@ paths:
     get:
      tags:
       - Music
-     description: Route pour retourner les informations les musics.
+     summary: Route pour retourner les informations les musiques.
+     description: Route pour retourner les informations les musiques.
      parameters:
         - in: path
           name: id
@@ -357,9 +360,10 @@ paths:
     get:
      tags:
       - Music
+     summary: Route pour retourner toutes les musiques d'un utilisateur.
      security:
         - bearerAuth: []
-     description: Route pour retourner les informations les musics.
+     description: Route pour retourner toutes les musiques d'un utilisateur.
      parameters:
         - in: path
           name: userId
@@ -393,6 +397,7 @@ paths:
     post:
      tags:
        - user-playlist
+     summary: Route ajouter une playlist à un utilisateur.
      security:
        - bearerAuth: []
      description: Route ajouter une playlist.
@@ -421,6 +426,7 @@ paths:
     get:
      tags:
       - user-playlist
+     summary: Route pour retourner toutes les playlist d'un utilisateur.
      description: Route pour retourner toutes les playlist d'un utilisateur.
      responses:
        "200":
@@ -449,6 +455,7 @@ paths:
     get:
      tags:
       - user-playlist
+     summary: Route pour retourner les informations d'une playlist.
      description: Route pour retourner les informations d'une playlist.
      parameters:
         - in: path
@@ -514,7 +521,8 @@ paths:
     get:
      tags:
       - user-playlist
-     description: Route pour toutes les playlist d'un user.
+     summary: Route pour toutes obtenir les playlist d'un user.
+     description: Route pour toutes obtenir les playlist d'un user.
      parameters:
         - in: path
           name: userId
@@ -549,6 +557,7 @@ paths:
     post:
      tags:
        - playlists-music
+     summary: Route ajouter une musique dans une playlist.
      security:
        - bearerAuth: []
      description: Route ajouter une musique dans une playlist.
@@ -649,6 +658,7 @@ paths:
     get:
      tags:
       - playlists-music
+     summary: Route pour retourner les musiques appartenant à une playlist.
      description: Route pour retourner les musiques appartenant à une playlist.
      parameters:
         - in: path
@@ -717,9 +727,10 @@ paths:
     post:
      tags:
        - album
+     summary: Route pour ajouter un album.
      security:
        - bearerAuth: []
-     description: Route ajouter un album.
+     description: Route pour ajouter un album.
      requestBody:
         required: true
         content:
@@ -776,7 +787,8 @@ paths:
     get:
      tags:
       - album
-     description: Route pour retourner les albums correspondant à un nom données
+     summary: Route pour retourner les albums correspondant à un nom donné.
+     description: Route pour retourner les albums correspondant à un nom donné.
      parameters:
         - in: query
           name: name
@@ -810,6 +822,7 @@ paths:
     get:
      tags:
       - album
+     summary: Route pour retourner les informations d'un album.
      description: Route pour retourner les informations d'un album.
      parameters:
         - in: path
@@ -853,10 +866,10 @@ paths:
     delete:
       tags:
         - album
-      summary: Route pour supprimer une playlist.
+      summary: Route pour supprimer un album.
       security:
         - bearerAuth: []
-      description: Route supprimant une playlist en via le id de celle-ci.
+      description: Route supprimant un album via le id de celui-ci.
       parameters:
         - in: path
           name: id
@@ -939,6 +952,7 @@ paths:
     get:
      tags:
       - album
+     summary: Route pour retourner les albums d'un user.
      description: Route pour retourner les albums d'un user.
      parameters:
         - in: path
@@ -973,6 +987,7 @@ paths:
     post:
      tags:
        - favorite
+     summary: Route ajouter une musique au favoris.
      security:
        - bearerAuth: []
      description: Route ajouter une musique au favoris.
@@ -1013,9 +1028,10 @@ paths:
     get:
      tags:
       - favorite
+     summary: Route pour retourner les favoris d'un utilisateur authentifier.
      security:
        - bearerAuth: []
-     description: Route pour retourner les favoris d'un utilisateur authentifier
+     description: Route pour retourner les favoris d'un utilisateur authentifier.
      responses:
        "200":
          description: Réponse contenant les musiques favorites d'un utilisateur.
@@ -1043,7 +1059,8 @@ paths:
       - favorite
      security:
        - bearerAuth: []
-     description: Route pour supprimer une musique des favoris
+     summary: Route pour supprimer une musique des favoris.
+     description: Route pour supprimer une musique des favoris.
      parameters:
         - in: query
           name: musicId
