@@ -5,7 +5,7 @@ const router = express.Router();
 const { upload } = require('../../modules/upload');
 const db = require('../../modules/db');
 
-// TODO finish this atrocity
+// Route pour changer le cover d'un album
 router.put('/:albumId', upload.fields([{ name: 'cover', maxCount: 1 }]), async (req, res) => {
   if (!req.files.cover) return res.status(400).json({ message: 'aucune image fournis' });
   const { albumId } = req.params;

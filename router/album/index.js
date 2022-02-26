@@ -6,9 +6,7 @@ const authMiddleware = require('../../modules/auth-middleware');
 const { upload } = require('../../modules/upload');
 const db = require('../../modules/db');
 
-// TODO ajouter les vérifications au routes
-// Genre les shits des erreurs 400, quoi que optionnel
-
+// Route pour ajouter un album.
 router.post('/', authMiddleware, async (req, res) => {
   const {
     //
@@ -20,6 +18,7 @@ router.post('/', authMiddleware, async (req, res) => {
 
   const albumExist = await db('album').where('name', name).first();
 
+  // vérification
   if (albumExist) return res.status(409).send({ message: 'un album ayant ce nom existe déjà' });
   if (musicIds.length === 0) return res.status(400).send({ message: 'aucun id de music fournis' });
 
@@ -30,8 +29,8 @@ router.post('/', authMiddleware, async (req, res) => {
     user_id: req.user.userId,
   });
 
+  // concatene les requestes de WHERE id pour éviter différente request(pour optimiser en gros).
   let whereId = '';
-
   musicIds.forEach((id) => {
     whereId += id === musicIds[0] ? `WHERE id = ${id} ` : `OR id = ${id} `;
   });
@@ -41,7 +40,7 @@ router.post('/', authMiddleware, async (req, res) => {
   return res.status(201).send({ created: true });
 });
 
-// Route retournant les albums correspondant à un nom donné
+// Route retournant les albums correspondants à un nom donné.
 router.get('/', async (req, res) => {
   const { name } = req.query;
   const searchRelatedExist = await db('album').where('name', 'like', `%${name}%`);
@@ -52,7 +51,8 @@ router.get('/', async (req, res) => {
   return res.status(200).send(searchRelatedExist);
 });
 
-// Route retournant les information d'un album ainsi que son contenu correspondant au id
+// Route retournant les informations d'un album ainsi
+// que son contenu correspondant selon le id fournis.
 router.get('/:id', async (req, res) => {
   const { id } = req.params;
 
@@ -76,22 +76,6 @@ router.get('/user/:userId', async (req, res) => {
   if (!album) return res.status(404).send({ message: "Aucun album ne correspond à l'id donné" });
 
   return res.status(200).json(album);
-});
-
-//TODO finish this atrocity
-router.put('/cover', authMiddleware, upload.fields([{ name: 'cover', maxCount: 1 }]), async (req, res) => {
-  if (!req.files.cover) return res.status(400).json({ message: 'aucune image fournis' });
-  const { albumId } = req.params;
-  const file = req.files.cover[0];
-  const { originalname } = file;
-  const { userId } = req.user;
-  const image = `+-+${userId}+-+--${originalname}`;
-
-  await db('album') //
-    .update({ image })
-    .where('userId', userId)
-    .where('id', albumId);
-  return res.status(200).json({ modified: true });
 });
 
 // supprime une chanson en prenant son id comme paramètre

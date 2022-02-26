@@ -3,8 +3,9 @@ const swaggerUI = require('swagger-ui-express');
 const YAML = require('yamljs');
 
 const { Router } = require('express');
-
 const authMiddleware = require('../modules/auth-middleware');
+
+// Les routes
 const auth = require('./auth');
 const user = require('./user');
 const music = require('./music');
@@ -16,8 +17,8 @@ const cover = require('./cover');
 
 const router = Router();
 
+// Lance la documentation au path /doc
 const apiSpec = './specs/api.yaml';
-
 router.use('/doc', swaggerUI.serve, swaggerUI.setup(YAML.load(apiSpec)));
 router.use(
   OpenApiValidator.middleware({
@@ -27,18 +28,13 @@ router.use(
   }),
 );
 
+// Les routes utilisées par le router
 router.use('/auth', auth);
-
 router.use('/user', authMiddleware, user);
-
 router.use('/music', music);
-
 router.use('/user-playlist', usersPlaylist);
-
 router.use('/playlists-music', playlistsMusic);
-
 router.use('/favorite', favorite);
-
 router.use('/album', album);
 router.use('/cover', authMiddleware, cover);
 

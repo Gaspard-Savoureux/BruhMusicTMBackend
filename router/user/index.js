@@ -6,6 +6,8 @@ const { upload } = require('../../modules/upload');
 
 const router = express.Router();
 
+// Route pour obtenir les informations d'un user son un id fournis.
+// Si aucun id n'est fournis utilise le id tenu par le token.
 router.get('/', async (req, res) => {
   const { userId } = req.query.id ? req.query : req.user;
 
@@ -16,6 +18,7 @@ router.get('/', async (req, res) => {
   return res.status(200).json(user);
 });
 
+// Route pour modifier les informations d'un utilisateur
 router.put('/', async (req, res) => {
   const { newEmail, newPassword, newUsername } = req.body;
   const id = req.user.userId;
@@ -57,6 +60,7 @@ router.put('/', async (req, res) => {
   return res.status(200).json({ modified: false });
 });
 
+// Route pour ajouter une image de profile à un utilisateur
 router.put('/profileImage', upload.fields([{ name: 'image', maxCount: 1 }]), async (req, res) => {
   if (!req.files.image) return res.status(400).json({ message: 'aucune image fournis' });
   const file = req.files.image[0];
@@ -68,6 +72,7 @@ router.put('/profileImage', upload.fields([{ name: 'image', maxCount: 1 }]), asy
   return res.status(200).json({ modified: true });
 });
 
+// Route pour supprimer un user selon son token
 router.delete('/', async (req, res) => {
   await db.raw(`
     DELETE user,

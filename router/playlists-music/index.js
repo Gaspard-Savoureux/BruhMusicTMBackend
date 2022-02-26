@@ -54,9 +54,10 @@ router.delete('/', authMiddleware, async (req, res) => {
   return res.status(200).json({ deleted: true });
 });
 
-//
-router.get('/', async (req, res) => {
-  const { userId } = req.query.userId ? req.query.userId : req.user.userId;
+// pour pour obtenir une playlist selon son id
+// TODO à compléter
+router.get('/:id', async (req, res) => {
+  const { id } = req.params;
 
   const playlist = await db('playlists_music') //
     .join('playlist', 'playlists_music.playlist_id', 'playlist.id')
@@ -81,8 +82,8 @@ router.get('/', async (req, res) => {
 //   return res.status(200).json(playlist);
 // });
 
-// obtient toute les playlists liées à un user selon son id.
-
+// Route pour supprimer une playlistsMusic
+// TODO à revérifier
 router.delete('/:id', authMiddleware, async (req, res) => {
   const { id } = req.params;
 

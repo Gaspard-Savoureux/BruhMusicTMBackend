@@ -5,6 +5,7 @@ const db = require('../../modules/db');
 
 const router = express.Router();
 
+// Route pour obtenir un jeton d'authentification
 router.post('/create-token/', async (req, res) => {
   const { userCred, password } = req.body;
 
@@ -33,6 +34,7 @@ router.post('/create-token/', async (req, res) => {
   return res.status(200).json({ token });
 });
 
+// Route pour enregistrer un utilisateur
 router.post('/register', async (req, res) => {
   const { password, username } = req.body;
 
@@ -63,6 +65,7 @@ router.post('/register', async (req, res) => {
     password: hashedPassword,
   });
 
+  // Créé une playlist favorite à tout les utilisateurs par défaut
   const playlistId = await db('playlist').insert({
     name: 'favorite',
     description: `playlist de musique favorites de ${username}`,
