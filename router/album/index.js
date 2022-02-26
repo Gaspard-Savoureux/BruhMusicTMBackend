@@ -46,9 +46,9 @@ router.get('/', async (req, res) => {
   const searchRelatedExist = await db('album').where('name', 'like', `%${name}%`);
   if (!name) {
     const topAlbum = await db('album').orderBy('consulted').limit(20);
-    return res.status(200).send(topAlbum);
+    return res.status(200).json(topAlbum);
   }
-  return res.status(200).send(searchRelatedExist);
+  return res.status(200).json(searchRelatedExist);
 });
 
 // Route retournant les informations d'un album ainsi
