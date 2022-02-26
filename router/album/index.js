@@ -3,7 +3,6 @@ const express = require('express');
 const router = express.Router();
 const authMiddleware = require('../../modules/auth-middleware');
 
-const { upload } = require('../../modules/upload');
 const db = require('../../modules/db');
 
 // Route pour ajouter un album.
@@ -64,7 +63,7 @@ router.get('/:id', async (req, res) => {
 
   const infoAlbum = { ...album, musicList };
 
-  return res.status(200).send({ infoAlbum });
+  return res.status(200).json(infoAlbum);
 });
 
 // obtient toute les albums liées à un user selon son id.
