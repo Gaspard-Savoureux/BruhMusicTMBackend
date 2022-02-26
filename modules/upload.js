@@ -14,7 +14,7 @@ const storage = multer.diskStorage({
     } else if (imageTypes.test(file.mimetype) && req.baseUrl === '/cover') {
       filename = `+-+${req.user.userId}+-+--${file.originalname}`;
     } else if (imageTypes.test(file.mimetype)) {
-      filename = `+-${req.user.userId}-+--${file.originalname}`;
+      filename = `|-${req.user.userId}-|--${file.originalname}`;
     }
 
     cb(null, filename);
