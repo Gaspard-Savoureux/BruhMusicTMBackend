@@ -248,12 +248,12 @@ paths:
               type: object
               required:
                 - "image"
-                - "musique"
+                - "music"
               properties:
                 image: 
                   type: string
                   format: binary
-                musique:
+                music:
                   type: string
                   format: binary
      responses:
@@ -947,6 +947,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/NotFound"
+
 
   /cover/{albumId}:
     put:
