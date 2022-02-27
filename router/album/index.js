@@ -71,10 +71,12 @@ router.get('/:id', async (req, res) => {
 
 // obtient toute les albums liées à un user selon son id.
 // si aucun id ne lui est données renvoi les albums liées à son propres id
-router.get('/user/:userId', async (req, res) => {
-  const { userId } = req.params.userId ? req.params : req.user.userId;
+router.get('/user/:userId', authMiddleware, async (req, res) => {
+  // const { userId } = req.params.userId ? req.params : req.user.userId;
+  const userId = parseInt(req.params.userId, 10);
+  const id = userId === 0 ? req.user.userId : userId;
 
-  const album = await db('album').where('user_id', userId);
+  const album = await db('album').where('user_id', id);
   if (!album) return res.status(404).send({ message: "Aucun album ne correspond à l'id donné" });
 
   return res.status(200).json(album);
