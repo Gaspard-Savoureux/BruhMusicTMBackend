@@ -7,7 +7,6 @@ const fileTypes = /flac|wav|jpeg|jpg|png|gif/;
 const storage = multer.diskStorage({
   filename: (req, file, cb) => {
     let filename;
-    console.log(req);
     if (audioTypes.test(file.mimetype)) filename = `|-${req.user.userId}-|--${file.originalname}`;
     if (imageTypes.test(file.mimetype) && req.path === '/profileImage') {
       filename = `++${req.user.userId}++--${file.originalname}`;

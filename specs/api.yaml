@@ -240,6 +240,22 @@ paths:
        - bearerAuth: []
      summary: Route pour téléverser les musiques.
      description: Route pour téléverser les musiques.
+     requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+                - "image"
+                - "musique"
+              properties:
+                image: 
+                  type: string
+                  format: binary
+                musique:
+                  type: string
+                  format: binary
      responses:
        "201":
          description: Réponse lorsque la musique est créé.
@@ -401,6 +417,20 @@ paths:
      security:
        - bearerAuth: []
      description: Route ajouter une playlist.
+     requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+                - description
+              properties:
+                name: 
+                  type: string
+                description:
+                  type: string
      responses:
        "201":
          description: Réponse lorsque la playlist est créé.
@@ -428,6 +458,13 @@ paths:
       - user-playlist
      summary: Route pour retourner toutes les playlist d'un utilisateur.
      description: Route pour retourner toutes les playlist d'un utilisateur.
+     parameters:
+        - in: query
+          name: userId
+          schema:
+            type: integer
+          required: false
+          description: L'id de l'utilisateur recherché.
      responses:
        "200":
          description: Réponse contenant les informations conçernant la ou les playlist(s) retournée(s).
@@ -561,6 +598,20 @@ paths:
      security:
        - bearerAuth: []
      description: Route ajouter une musique dans une playlist.
+     requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - musicId
+                - playlistId
+              properties:
+                musicId: 
+                  type: integer
+                playlistId:
+                  type: integer
      responses:
        "201":
          description: Réponse lorsque la musique est ajouté dans la playlist.
@@ -583,44 +634,44 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Conflict"
-    delete:
-      tags:
-        - playlists-music
-      summary: Route pour retirez une musique d'une playlist.
-      security:
-        - bearerAuth: []
-      description: Route supprimant une musique dans une playlist via leur id respectif.
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - playlistId
-                - musicId
-      responses:
-        "200":
-          description: retourne un message confirmant le résultat désiré.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-        "401":
-          description: Non authorizé
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Unauthorized"
-        "404":
-          description: Non trouvé
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/NotFound"
+    # delete:
+    #   tags:
+    #     - playlists-music
+    #   summary: Route pour retirez une musique d'une playlist.
+    #   security:
+    #     - bearerAuth: []
+    #   description: Route supprimant une musique dans une playlist via leur id respectif.
+    #   requestBody:
+    #     required: true
+    #     content:
+    #       application/json:
+    #         schema:
+    #           type: object
+    #           required:
+    #             - playlistId
+    #             - musicId
+    #   responses:
+    #     "200":
+    #       description: retourne un message confirmant le résultat désiré.
+    #       content:
+    #         application/json:
+    #           schema:
+    #             type: object
+    #             properties:
+    #               message:
+    #                 type: string
+    #     "401":
+    #       description: Non authorizé
+    #       content:
+    #         application/json:
+    #           schema:
+    #             $ref: "#/components/schemas/Unauthorized"
+    #     "404":
+    #       description: Non trouvé
+    #       content:
+    #         application/json:
+    #           schema:
+    #             $ref: "#/components/schemas/NotFound"
     # get:
     #  tags:
     #   - playlists-music
@@ -702,7 +753,7 @@ paths:
           schema:
             type: integer
           required: true
-          description: L'id de la playlist cherchée.
+          description: L'id de la playlist à effacer.
       responses:
         "200":
           description: retourne un message confirmant le résultat désiré.
