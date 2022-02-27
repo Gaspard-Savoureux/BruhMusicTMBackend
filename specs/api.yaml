@@ -240,22 +240,22 @@ paths:
        - bearerAuth: []
      summary: Route pour téléverser les musiques.
      description: Route pour téléverser les musiques.
-     requestBody:
-        required: true
-        content:
-          multipart/form-data:
-            schema:
-              type: object
-              required:
-                - "image"
-                - "music"
-              properties:
-                image: 
-                  type: string
-                  format: binary
-                music:
-                  type: string
-                  format: binary
+    #  requestBody:
+    #     required: true
+    #     content:
+    #       multipart/form-data:
+    #         schema:
+    #           type: object
+    #           required:
+    #             - "image"
+    #             - "music"
+    #           properties:
+    #             image: 
+    #               type: string
+    #               format: binary
+    #             music:
+    #               type: string
+    #               format: binary
      responses:
        "201":
          description: Réponse lorsque la musique est créé.
