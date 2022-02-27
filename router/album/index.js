@@ -1,4 +1,5 @@
 const express = require('express');
+const fs = require('fs');
 
 const router = express.Router();
 const authMiddleware = require('../../modules/auth-middleware');
@@ -91,6 +92,14 @@ router.delete('/:id', authMiddleware, async (req, res) => {
   await db('album').where('id', id).del();
 
   await db('music').update('album_id', null).where('id', id);
+
+  fs.unlink(`public/uploads/${album.cover}`, (err) => {
+    if (err) {
+      throw err;
+    }
+
+    console.log('File is deleted.');
+  });
 
   return res.status(200).send({ deleted: true });
 });
