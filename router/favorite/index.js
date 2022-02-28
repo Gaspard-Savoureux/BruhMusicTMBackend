@@ -33,7 +33,9 @@ router.get('/', authMiddleware, async (req, res) => {
   const { favoriteId } = req.user;
 
   const playlist = await db('playlists_music') //
+    .select('music.*', 'playlists_music.*', 'user.username')
     .join('music', 'playlists_music.music_id', 'music.id')
+    .join('user', 'user.id', 'music.user_id')
     .where('playlists_music.playlist_id', favoriteId);
 
   return res.status(200).json(playlist);
