@@ -62,7 +62,10 @@ router.post(
 
 router.get('/', async (req, res) => {
   const { title } = req.query;
-  const searchRelatedExist = await db('music').where('title', 'like', `%${title}%`);
+  const searchRelatedExist = await db('music') //
+    .select('music.*', 'user.username')
+    .join('user', 'user.id', 'music.user_id')
+    .where('title', 'like', `%${title}%`);
 
   return res.status(201).send(searchRelatedExist);
 });
